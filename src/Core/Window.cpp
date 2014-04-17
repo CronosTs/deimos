@@ -72,7 +72,7 @@ namespace deimos
 
     void Window::setClearColor(int r, int g, int b, int a)
     {
-        glClearColor(r / 255, g / 255, b / 255, a / 255);
+        glClearColor(r / 255.f, g / 255.f, b / 255.f, a / 255.f);
     }
 
     void Window::clear()

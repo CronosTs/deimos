@@ -68,8 +68,12 @@ namespace deimos
     void Sprite::setTexture(TexturePtr_t& texture)
     {
         using namespace Phobos;
+
         m_texture = texture;
-        setRect(FRect(0, 0, Size_s<Float32_t>(texture->getWidth(), texture->getHeight())));
+        Float_t width = static_cast<Float_t>(texture->getWidth());
+        Float_t height = static_cast<Float_t>(texture->getHeight());
+
+        setRect(FRect(0, 0, Size_s<Float_t>(width, height)));
     }
 
     void Sprite::setTexture(const Phobos::String_t& texture)
