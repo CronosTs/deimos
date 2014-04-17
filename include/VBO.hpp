@@ -196,7 +196,7 @@ namespace deimos
 
                 bind();
                 ::glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(T),
-                    static_cast<void*>(&data[0]),
+                    static_cast<void*>(&m_data[0]),
                     glToVBOTarget[vbotarget].glTarget);
             }
 

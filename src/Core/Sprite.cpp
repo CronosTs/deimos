@@ -79,6 +79,6 @@ namespace deimos
 
     Sprite::TexturePtr_t Sprite::getTexture()
     {
-        m_texture;
+        return m_texture;
     }
 }
