@@ -5,7 +5,7 @@
 
 namespace deimos
 {
-    class Texture
+    class PH_BASE_API Texture
     {
         public:
 

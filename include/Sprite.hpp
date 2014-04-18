@@ -13,7 +13,7 @@
 
 namespace deimos
 {
-    class Sprite
+    class PH_BASE_API Sprite
     {
         public:
 

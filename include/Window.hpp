@@ -3,11 +3,12 @@
 
 #include <Phobos/String.h>
 #include <Phobos/Types.h>
+#include <Phobos/BaseAPI.h>
 #include <memory>
 
 namespace deimos
 {   
-    class Window
+    class PH_BASE_API Window
     {
         public:
 

@@ -11,7 +11,7 @@ namespace deimos
 {
     PH_DECLARE_SINGLETON_PTR(Render);
 
-    class Render: public Phobos::Engine::Module
+    class PH_BASE_API Render: public Phobos::Engine::Module
     {
         PH_DECLARE_SINGLETON_METHODS(Render);
 
