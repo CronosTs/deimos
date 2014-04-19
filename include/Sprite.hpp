@@ -51,7 +51,7 @@ namespace deimos
             bool m_visible;
             FRect m_rect;
             std::shared_ptr<Texture> m_texture;
-            VBO<Vertex> m_vbo;
+            VBO m_vbo;
     };
 }
 

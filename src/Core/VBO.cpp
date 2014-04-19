@@ -1,33 +1,9 @@
 #include "VBO.hpp"
 
-struct Vert
-{
-    float x, y, tx, ty;
-    int r, g, b;
-};
-
-deimos::VBO<Vert> myVBO;
-
-/*
 #include <GL/glew.h>
 
 namespace deimos
 {
-    struct GLModeToVBO
-    {
-        int glMode;
-        int vboMode;
-    };
-
-    static GLModeToVBO glToVBOMode[] =
-    {
-        { VBODrawMode::TRIANGLE,        GL_TRIANGLES},
-        { VBODrawMode::TRIANGLE_STRIP,  GL_TRIANGLE_STRIP },
-        { VBODrawMode::TRIANGLE_FAN,    GL_TRIANGLE_FAN },
-        { VBODrawMode::LINE,            GL_LINE },
-        { VBODrawMode::LINE_LOOP,       GL_LINE_LOOP },
-        { VBODrawMode::LINE_STRIP,      GL_LINE_STRIP }
-    };
 
     struct GLTargetToVBOTarget
     {
@@ -35,97 +11,177 @@ namespace deimos
         int vbotarget;
     };
 
-    static GLTargetToVBOTarget glToVBOTarget[] = 
+    struct GLModeToVBO
     {
-        {VBOTarget::STATIC,   GL_STATIC_DRAW},
-        {VBOTarget::DYNAMIC,  GL_DYNAMIC_DRAW},
-        {VBOTarget::STREAM,   GL_STREAM_DRAW}
+        int glMode;
+        int vboMode;
     };
 
+    struct GLDataTypeToVBO
+    {
+        int glType,
+        vboType;
+    };
+
+    static GLModeToVBO glToVBOMode[] =
+    {
+        { VBODrawMode::TRIANGLE, GL_TRIANGLES },
+        { VBODrawMode::TRIANGLE_STRIP, GL_TRIANGLE_STRIP },
+        { VBODrawMode::TRIANGLE_FAN, GL_TRIANGLE_FAN },
+        { VBODrawMode::LINE, GL_LINE },
+        { VBODrawMode::LINE_LOOP, GL_LINE_LOOP },
+        { VBODrawMode::LINE_STRIP, GL_LINE_STRIP }
+    };
+
+    static GLTargetToVBOTarget glToVBOTarget[] =
+    {
+        { VBOTarget::STATIC, GL_STATIC_DRAW },
+        { VBOTarget::DYNAMIC, GL_DYNAMIC_DRAW },
+        { VBOTarget::STREAM, GL_STREAM_DRAW }
+    };
+
+    static GLDataTypeToVBO glDataTypeToVBO[] =
+    {
+        { VBODataType::SHORT, GL_SHORT },
+        { VBODataType::INT, GL_INT },
+        { VBODataType::FLOAT, GL_FLOAT },
+        { VBODataType::DOUBLE, GL_DOUBLE }
+    };
 
     VBO::VBO():
-        id(0),
-        created(false)
+        m_created(false),
+        m_id(0)
     {}
+
+    VBO::VBO(const VBOData& data, int vboTarget,
+        const VBOConfig& vertexConfig,
+        const VBOConfig& colorConfig,
+        const VBOConfig& textureConfig,
+        bool freeClientData)
+    {
+        create();
+        upload(data, vboTarget);
+        configVertex(vertexConfig);
+        configColor(colorConfig);
+        configTexture(textureConfig);
+
+        if (freeClientData)
+            free();
+    }
 
     VBO::~VBO()
     {
-        erase();
+        destroy();
     }
 
     void VBO::create()
     {
-        if (created)
-            erase();
+        if (m_created)
+            destroy();
 
-        glGenBuffers(1, &id); //TODO: check opengl errors
-        created = true;
+        ::glGenBuffers(1, &m_id);
+        m_created = true;
+        ::glEnable(GL_VERTEX_ARRAY);
     }
 
-    void VBO::erase()
+    void VBO::destroy()
     {
-        if (!created)
+        if (!m_created)
             return;
 
-        glDeleteBuffers(1, &id);
-        id = 0;
-        created = false;   
-    }
-
-    void VBO::free()
-    {
-        data.resize(0);
+        ::glDeleteBuffers(1, &m_id);
+        m_created = false;
     }
 
     void VBO::bind()
     {
-        //TODO: throw exception
-        if (!created)
-            return;
-
-        //TODO: use enums from VBO's class
-        glBindBuffer(GL_ARRAY_BUFFER, id);
+        if (m_created)
+            ::glBindBuffer(GL_ARRAY_BUFFER, m_id);
     }
 
-    void VBO::upload(const VBOData& _data, int count, int vbotarget)
+    void VBO::unbind()
     {
-        //TODO: throw exception
-        if (!created || _data.empty())
+        //that is the proof that id is always > 0
+        ::glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
+
+    void VBO::free()
+    {
+        if (!m_created)
             return;
 
-        vertexCount = count;
-        data.clear();
-        data.resize(_data.size());
+        m_data.resize(0);
+    }
+
+    void VBO::upload(const VBOData& data, int vbotarget)
+    {
+        //TODO: throw exception
+        if (!m_created || data.empty())
+            return;
+
+        m_data.clear();
+        m_data.resize(data.size());
 
         //copy data
-        std::copy(_data.begin(), _data.end(), data.begin());
+        std::copy(data.begin(), data.end(), m_data.begin());
 
-        bind();
+        doUpload(vbotarget);
         
-        glBufferData(GL_ARRAY_BUFFER, data.size(), 
-                     static_cast<void*>(&data[0]), 
-                     glToVBOTarget[vbotarget].glTarget);
     }
 
-    void VBO::setId(unsigned int _id)
+    void VBO::doUpload(int vboTarget)
     {
-        id = _id;
-    }
-
-    unsigned int VBO::getId()
-    {
-        return id;
+        bind();
+        ::glBufferData(GL_ARRAY_BUFFER, m_data.size(),
+            static_cast<void*>(&m_data[0]),
+            glToVBOTarget[vboTarget].glTarget);
     }
 
     void VBO::draw(int drawMode, int start, int count)
     {
+        if (!m_created)
+            return;
+
+        if (count <= 0)
+            count = m_data.size();
+
         bind();
+        ::glDrawArrays(glToVBOMode[drawMode].glMode, start, count);
+    }
 
-        if (count == -1)
-            count = vertexCount;
+    void VBO::configVertex(const VBOConfig& cfg)
+    {
+        if (!m_created)
+            return;
 
-        glDrawArrays(glToVBOMode[drawMode].glMode, start, count);
+        bind();
+        ::glVertexPointer(cfg.size,
+            glDataTypeToVBO[cfg.type].glType,
+            cfg.stride,
+            reinterpret_cast<void *>(cfg.pointer));
+    }
+
+    void VBO::configTexture(const VBOConfig& cfg)
+    {
+        if (!m_created)
+            return;
+
+        bind();
+        ::glTexCoordPointer(cfg.size,
+            glDataTypeToVBO[cfg.type].glType,
+            cfg.stride,
+            reinterpret_cast<void *>(cfg.pointer));
+    }
+
+    void VBO::configColor(const VBOConfig& cfg)
+    {
+        if (!m_created)
+            return;
+
+        bind();
+        ::glColorPointer(cfg.size,
+            glDataTypeToVBO[cfg.type].glType,
+            cfg.stride,
+            reinterpret_cast<void *>(cfg.pointer));
     }
 }
-
-*/

@@ -49,7 +49,7 @@ namespace deimos
         quad.t4.texture.x  = rect.m_tOrigin[0] + rect.m_tSize.m_tWidth;
         quad.t4.texture.y  = rect.m_tOrigin[1] + rect.m_tSize.m_tHeight;
 
-        VBO<Vertex>::VBOData data;
+        std::vector<Vertex> data;
         //first triangle
         data.push_back(quad.t1);
         data.push_back(quad.t3);

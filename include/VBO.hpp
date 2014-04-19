@@ -2,8 +2,10 @@
 #ifndef DEIMOS_VBO_H_INCLUDED
 #define DEIMOS_VBO_H_INCLUDED
 
+#include <Phobos/BaseAPI.h>
+
 #include <vector>
-#include <GL/glew.h>
+#include <iterator>
 
 namespace deimos
 {
@@ -14,6 +16,7 @@ namespace deimos
         FLOAT,
         DOUBLE
     };
+
     enum VBOType
     {
         ARRAY,
@@ -36,52 +39,6 @@ namespace deimos
         LINE_LOOP,
         LINE_STRIP
     };
-
-    namespace
-    {
-        struct GLTargetToVBOTarget
-        {
-            int glTarget;
-            int vbotarget;
-        };
-
-        struct GLModeToVBO
-        {
-            int glMode;
-            int vboMode;
-        };
-
-        struct GLDataTypeToVBO
-        {
-            int glType,
-                vboType;
-        };
-
-        static GLModeToVBO glToVBOMode[] =
-        {
-            { VBODrawMode::TRIANGLE,        GL_TRIANGLES },
-            { VBODrawMode::TRIANGLE_STRIP,  GL_TRIANGLE_STRIP },
-            { VBODrawMode::TRIANGLE_FAN,    GL_TRIANGLE_FAN },
-            { VBODrawMode::LINE,            GL_LINE },
-            { VBODrawMode::LINE_LOOP,       GL_LINE_LOOP },
-            { VBODrawMode::LINE_STRIP,      GL_LINE_STRIP }
-        };
-
-        static GLTargetToVBOTarget glToVBOTarget[] =
-        {
-            { VBOTarget::STATIC,  GL_STATIC_DRAW },
-            { VBOTarget::DYNAMIC, GL_DYNAMIC_DRAW },
-            { VBOTarget::STREAM,  GL_STREAM_DRAW }
-        };
-
-        static GLDataTypeToVBO glDataTypeToVBO[] =
-        {
-            { VBODataType::SHORT,   GL_SHORT },
-            { VBODataType::INT,     GL_INT },
-            { VBODataType::FLOAT,   GL_FLOAT },
-            { VBODataType::DOUBLE,  GL_DOUBLE }
-        };
-    }
 
     struct VBOConfig
     {
@@ -108,141 +65,47 @@ namespace deimos
     };
 
 
-    template<class T>
-    class VBO
+    class PH_BASE_API VBO
     {
         public:
 
-            typedef std::vector<T> VBOData;
+            typedef std::vector<char> VBOData;
 
-            VBO() :
-                m_created(false),
-                m_id(0)
-            {}
+            VBO();
 
             VBO(const VBOData& data, int vboTarget,
                 const VBOConfig& vertexConfig,
                 const VBOConfig& colorConfig,
                 const VBOConfig& textureConfig,
-                bool freeClientData = false)
+                bool freeClientData = false);
+
+            ~VBO();
+
+            void create();
+            void destroy(); //destroy the buffer and free data from gpu side
+            void bind();
+            void unbind();
+            void free(); //free data from client side
+            void upload(const VBOData& data, int vboTarget);
+            void draw(int drawMode, int start = 0, int count = -1);
+            void configVertex(const VBOConfig& cfg);
+            void configTexture(const VBOConfig& cfg);
+            void configColor(const VBOConfig& cfg);
+
+            template <class T>
+            void upload(const std::vector<T>& vboData, int vboTarget)
             {
-                create();
-                upload(data, vboTarget);
-                configVertex(vertexConfig);
-                configColor(colorConfig);
-                configTexture(textureConfig);
+                m_data.resize(vboData.size() * sizeof(T));
 
-                if (freeClientData)
-                    free();
-            }
+                const char *start = reinterpret_cast<const char*>(&vboData[0]), 
+                           *end   = reinterpret_cast<const char*>(&vboData[vboData.size()])
+                                    + sizeof(T);
 
-            ~VBO()
-            {
-                destroy();
-            }
+                std::copy(start,  //first adress
+                          end,    //last adress. TODO: verify if this is the correct adress
+                          std::back_inserter(m_data));
 
-            void create()
-            {
-                if (m_created)
-                    destroy();
-
-                ::glGenBuffers(1, &m_id);
-                m_created = true;
-                ::glEnable(GL_VERTEX_ARRAY);
-            }
-
-            //destroy the vuffer and free data from gpu side
-            void destroy()
-            {
-                if (!m_created)
-                    return;
-
-                ::glDeleteBuffers(1, &m_id);
-                m_created = false;
-            }
-
-            void bind()
-            {
-                if (m_created)
-                    ::glBindBuffer(GL_ARRAY_BUFFER, m_id);
-            }
-
-            void unbind()
-            {
-                //that is the proof that id is always > 0
-                ::glBindBuffer(GL_ARRAY_BUFFER, 0);
-            }
-
-            //free data from client side
-            void free()
-            {
-                if (!m_created)
-                    return;
-
-                m_data.resize(0);
-            }
-
-            void upload(const VBOData& data, int vbotarget)
-            {
-                //TODO: throw exception
-                if (!m_created || data.empty())
-                    return;
-
-                m_data.clear();
-                m_data.resize(data.size());
-
-                //copy data
-                std::copy(data.begin(), data.end(), m_data.begin());
-
-                bind();
-                ::glBufferData(GL_ARRAY_BUFFER, data.size() * sizeof(T),
-                    static_cast<void*>(&m_data[0]),
-                    glToVBOTarget[vbotarget].glTarget);
-            }
-
-            void draw(int drawMode, int start=0, int count=m_data.size())
-            {
-                if (!m_created)
-                    return;
-
-                bind();
-                ::glDrawArrays(glToVBOMode[drawMode].glMode, start, count);
-            }
-
-            void configVertex(const VBOConfig& cfg)
-            {
-                if (!m_created)
-                    return;
-
-                bind();
-                ::glVertexPointer(cfg.size, 
-                                  glDataTypeToVBO[cfg.type].glType,
-                                  cfg.stride, 
-                                  reinterpret_cast<void *>(cfg.pointer));
-            }
-
-            void configTexture(const VBOConfig& cfg)
-            {
-                if (!m_created)
-                    return;
-
-                bind();
-                ::glTexCoordPointer(cfg.size,
-                                    glDataTypeToVBO[cfg.type].glType,
-                                    cfg.stride,
-                                    reinterpret_cast<void *>(cfg.pointer));
-            }
-
-            void configColor(const VBOConfig& cfg)
-            {
-                if (!m_created)
-                    return;
-
-                bind();
-                ::glColorPointer(cfg.size,
-                                 glDataTypeToVBO[cfg.type].glType,
-                                 cfg.stride,
-                                 reinterpret_cast<void *>(cfg.pointer));
+                doUpload(vboTarget);
             }
 
         protected:
@@ -253,6 +116,8 @@ namespace deimos
             }
 
         private:
+
+            void doUpload(int vbotarget);
 
             //non copyable
             VBO(const VBO&);
