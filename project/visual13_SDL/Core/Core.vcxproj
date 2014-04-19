@@ -11,7 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\include\Render.hpp" />
     <ClInclude Include="..\..\..\include\Sprite.hpp" />
     <ClInclude Include="..\..\..\include\Texture.hpp" />
     <ClInclude Include="..\..\..\include\VBO.hpp" />
@@ -20,7 +19,6 @@
     <ClInclude Include="..\..\..\include\Window.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\Core\Render.cpp" />
     <ClCompile Include="..\..\..\src\Core\Sprite.cpp" />
     <ClCompile Include="..\..\..\src\Core\Texture.cpp" />
     <ClCompile Include="..\..\..\src\Core\VBO.cpp" />
@@ -72,14 +70,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;CORE_EXPORTS;PH_BASE_EXPORTS;PH_CHECK_ASSERT;PH_SDL;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\..\include\;$(PHOBOS_HOME)\include\;$(PHOBOS_DEPS_HOME)\SDL-1.2.15\include\;$(DEIMOS_DEPS_HOME)\glew-1.10.0\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\include\;$(PHOBOS_HOME)\include\;$(PHOBOS_DEPS_HOME)\SDL-1.2.15\include\;$(DEIMOS_DEPS_HOME)\glew-1.10.0\include\;$(DEIMOS_DEPS_HOME)\SDL_image-1.2.12\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ImportLibrary>..\..\..\lib\$(TargetName).lib</ImportLibrary>
       <AdditionalLibraryDirectories>$(PHOBOS_HOME)\lib\;$(PHOBOS_DEPS_HOME)\lib\;$(DEIMOS_DEPS_HOME)\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>PH_Base_d.lib;PH_System_d.lib;PH_Register_d.lib;PH_Engine_d.lib;SDL_d.lib;glew_d.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>PH_Base_d.lib;PH_System_d.lib;PH_Register_d.lib;PH_Engine_d.lib;SDL_d.lib;SDL_Image_d.lib;glew_d.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -91,7 +89,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;CORE_EXPORTS;PH_BASE_EXPORTS;PH_IGNORE_ASSERT;PH_SDL;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\..\include\;$(PHOBOS_HOME)\include\;$(PHOBOS_DEPS_HOME)\SDL-1.2.15\include\;$(DEIMOS_DEPS_HOME)\glew-1.10.0\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\include\;$(PHOBOS_HOME)\include\;$(PHOBOS_DEPS_HOME)\SDL-1.2.15\include\;$(DEIMOS_DEPS_HOME)\glew-1.10.0\include\;$(DEIMOS_DEPS_HOME)\SDL_image-1.2.12\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -100,7 +98,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <ImportLibrary>..\..\..\lib\$(TargetName).lib</ImportLibrary>
       <AdditionalLibraryDirectories>$(PHOBOS_HOME)\lib\;$(PHOBOS_DEPS_HOME)\lib\;$(DEIMOS_DEPS_HOME)\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>PH_Base.lib;PH_System.lib;PH_Register.lib;PH_Engine.lib;SDL.lib;glew.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>PH_Base.lib;PH_System.lib;PH_Register.lib;PH_Engine.lib;SDL.lib;SDL_Image.lib;glew.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
     </Link>
   </ItemDefinitionGroup>

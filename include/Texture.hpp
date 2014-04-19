@@ -14,7 +14,6 @@ namespace deimos
 
             Texture(const Phobos::String_t& file);
 
-            //only supports BMP images
             void loadFromFile(const Phobos::String_t& file);
             void bind();
             void destroy();

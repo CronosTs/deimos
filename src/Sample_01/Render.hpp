@@ -7,7 +7,7 @@
 #include "Window.hpp"
 #include "VBO.hpp"
 
-namespace deimos
+namespace sample_01
 {
     PH_DECLARE_SINGLETON_PTR(Render);
 

@@ -23,11 +23,11 @@ void runDeimos()
 
     releaseCaller.AddProc(Phobos::Engine::Core::ReleaseInstance);
     releaseCaller.AddProc(Phobos::Engine::EventManagerModule::ReleaseInstance);
-    releaseCaller.AddProc(deimos::Render::ReleaseInstance);
+    releaseCaller.AddProc(sample_01::Render::ReleaseInstance);
 
     auto& core = Phobos::Engine::Core::CreateInstance();
     core.AddModule(Phobos::Engine::EventManagerModule::CreateInstance());
-    core.AddModule(deimos::Render::CreateInstance(), Phobos::Engine::ModulePriorities::LOWEST);
+    core.AddModule(sample_01::Render::CreateInstance(), Phobos::Engine::ModulePriorities::LOWEST);
 
     core.LaunchBootModule("", 0, nullptr);
 

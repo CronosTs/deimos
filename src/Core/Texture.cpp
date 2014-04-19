@@ -1,6 +1,7 @@
 #include "Texture.hpp"
 
 #include <SDL.h>
+#include <SDL_Image.h>
 #include <GL/glew.h>
 #include <Phobos/Exception.h>
 
@@ -29,7 +30,7 @@ namespace deimos
             destroy();
 
         
-        SDL_Surface* image = SDL_LoadBMP(file.c_str());
+        SDL_Surface* image = IMG_Load(file.c_str());
         if (!image)
             PH_RAISE(Phobos::ExceptionTypes::NATIVE_API_FAILED_EXCEPTION,
                      "Texture",

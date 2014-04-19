@@ -12,6 +12,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Sample_01\main.cpp" />
+    <ClCompile Include="..\..\..\src\Sample_01\Render.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\src\Sample_01\Render.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3C0D3267-665D-456C-BC4B-555A7FC22721}</ProjectGuid>
