@@ -31,10 +31,12 @@ namespace deimos
 
         
         SDL_Surface* image = IMG_Load(file.c_str());
-        if (!image)
+        if (image == nullptr)
             PH_RAISE(Phobos::ExceptionTypes::NATIVE_API_FAILED_EXCEPTION,
-                     "Texture",
-                     Phobos::String_t("Cound not load this file: ")+file);
+            "Texture",
+            Phobos::String_t("Could not load this file: ")
+                .append(file)
+                .append("; SDL_Image_Error: ").append(IMG_GetError()));
 
         ::glGenTextures(GL_TEXTURE_2D, &m_id);
         ::glBindTexture(GL_TEXTURE_2D, m_id);

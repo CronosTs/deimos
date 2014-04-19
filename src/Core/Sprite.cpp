@@ -20,6 +20,9 @@ namespace deimos
 
     void Sprite::draw()
     {
+        if (!m_visible)
+            return;
+
         m_texture->bind();
         m_vbo.draw(VBODrawMode::TRIANGLE, 0, 2);
     }

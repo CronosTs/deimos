@@ -4,7 +4,7 @@
 #include <Phobos/Engine/Core.h>
 #include <Phobos/Singleton.h>
 #include <GL/glew.h>
-#include "Window.hpp"
+#include <Deimos/Window.hpp>
 
 namespace sample_01
 {
@@ -35,6 +35,9 @@ namespace sample_01
     void Render::OnRenderReady()
     {
         renderReady = true;
+
+        spr.setTexture("player_male_base.png");
+        spr.setVisible(true);
     }
 
     void Render::OnUpdate()
@@ -44,6 +47,7 @@ namespace sample_01
 
         auto& wnd = deimos::Window::createInstance();
         wnd.clear();
+        spr.draw();
 
         /*glBegin(GL_TRIANGLES);
             

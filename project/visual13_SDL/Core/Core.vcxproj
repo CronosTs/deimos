@@ -11,19 +11,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\include\Sprite.hpp" />
-    <ClInclude Include="..\..\..\include\Texture.hpp" />
-    <ClInclude Include="..\..\..\include\VBO.hpp" />
-    <ClInclude Include="..\..\..\include\Vector.hpp" />
-    <ClInclude Include="..\..\..\include\Vertex.hpp" />
-    <ClInclude Include="..\..\..\include\Window.hpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\..\..\src\Core\Sprite.cpp" />
     <ClCompile Include="..\..\..\src\Core\Texture.cpp" />
     <ClCompile Include="..\..\..\src\Core\VBO.cpp" />
     <ClCompile Include="..\..\..\src\Core\Vector.cpp" />
     <ClCompile Include="..\..\..\src\Core\Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\include\Deimos\Sprite.hpp" />
+    <ClInclude Include="..\..\..\include\Deimos\Texture.hpp" />
+    <ClInclude Include="..\..\..\include\Deimos\VBO.hpp" />
+    <ClInclude Include="..\..\..\include\Deimos\Vector.hpp" />
+    <ClInclude Include="..\..\..\include\Deimos\Vertex.hpp" />
+    <ClInclude Include="..\..\..\include\Deimos\Window.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{1FB79CD2-AB3B-4A64-A500-92F4DD0A0C7C}</ProjectGuid>
@@ -70,7 +70,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;CORE_EXPORTS;PH_BASE_EXPORTS;PH_CHECK_ASSERT;PH_SDL;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\..\include\;$(PHOBOS_HOME)\include\;$(PHOBOS_DEPS_HOME)\SDL-1.2.15\include\;$(DEIMOS_DEPS_HOME)\glew-1.10.0\include\;$(DEIMOS_DEPS_HOME)\SDL_image-1.2.12\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\include\Deimos\;$(PHOBOS_HOME)\include\;$(PHOBOS_DEPS_HOME)\SDL-1.2.15\include\;$(DEIMOS_DEPS_HOME)\glew-1.10.0\include\;$(DEIMOS_DEPS_HOME)\SDL_image-1.2.12\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -89,7 +89,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;CORE_EXPORTS;PH_BASE_EXPORTS;PH_IGNORE_ASSERT;PH_SDL;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\..\include\;$(PHOBOS_HOME)\include\;$(PHOBOS_DEPS_HOME)\SDL-1.2.15\include\;$(DEIMOS_DEPS_HOME)\glew-1.10.0\include\;$(DEIMOS_DEPS_HOME)\SDL_image-1.2.12\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\include\Deimos\;$(PHOBOS_HOME)\include\;$(PHOBOS_DEPS_HOME)\SDL-1.2.15\include\;$(DEIMOS_DEPS_HOME)\glew-1.10.0\include\;$(DEIMOS_DEPS_HOME)\SDL_image-1.2.12\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

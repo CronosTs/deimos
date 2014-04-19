@@ -3,15 +3,13 @@
 
 #include <Phobos/Engine/Module.h>
 #include <Phobos/Singleton.h>
-
-#include "Window.hpp"
-#include "VBO.hpp"
+#include <Deimos/Sprite.hpp>
 
 namespace sample_01
 {
     PH_DECLARE_SINGLETON_PTR(Render);
 
-    class PH_BASE_API Render: public Phobos::Engine::Module
+    class Render: public Phobos::Engine::Module
     {
         PH_DECLARE_SINGLETON_METHODS(Render);
 
@@ -30,6 +28,7 @@ namespace sample_01
         private:
 
             bool renderReady;
+            deimos::Sprite spr;
     };
 }
 
