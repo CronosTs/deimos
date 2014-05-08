@@ -1,7 +1,6 @@
 
 #include <Phobos/Shell/Utils.h>
 #include <Phobos/Engine/Core.h>
-#include <Phobos/Engine/EventManagerModule.h>
 #include <Phobos/Memory.h>
 #include <Phobos/ProcVector.h>
 #include <Phobos/System/Timer.h>
@@ -11,6 +10,7 @@
 #include <exception>
 
 #include "Render.hpp"
+#include "Console.h"
 
 void runDeimos();
 
@@ -28,16 +28,14 @@ void runDeimos()
         Phobos::ProcVector releaseCaller;
 
         releaseCaller.AddProc(Phobos::Engine::Core::ReleaseInstance);
-        releaseCaller.AddProc(Phobos::Engine::EventManagerModule::ReleaseInstance);
         releaseCaller.AddProc(sample_01::Render::ReleaseInstance);
+        releaseCaller.AddProc(Console::ReleaseInstance);
 
-        auto& core = Phobos::Engine::Core::CreateInstance();
-        core.AddModule(Phobos::Engine::EventManagerModule::CreateInstance());
+        //precisamos de uma instancia do console.
+        auto& core = Phobos::Engine::Core::CreateInstance(Console::CreateInstance(), "", 0, nullptr);
         core.AddModule(sample_01::Render::CreateInstance(), Phobos::Engine::ModulePriorities::LOWEST);
 
-        core.LaunchBootModule("", 0, nullptr);
-
-        core.MainLoop();
+        core.StartMainLoop();
 
         releaseCaller.CallAll();
     }

@@ -11,8 +11,7 @@ namespace sample_01
     PH_DEFINE_DEFAULT_SINGLETON(Render);
 
     Render::Render():
-        Phobos::Engine::Module("Render"),
-        renderReady(false)
+        Phobos::Engine::Module("Render")
     {}
 
     Render::~Render()
@@ -20,46 +19,54 @@ namespace sample_01
         deimos::Window::releaseInstance();
     }
 
-    void Render::OnBoot()
+    void Render::OnInit()
     {
-        Phobos::LogMessage("[Render::OnBoot] Starting");
-        Phobos::LogMessage("[Render::OnBoot] Creating window");
+        Phobos::LogMessage("[Render::OnInit] Starting");
+        Phobos::LogMessage("[Render::OnInit] Creating window");
 
         deimos::Window::createInstance().open("MyWindow", 800, 600);
         deimos::Window::createInstance().clear();
         
-        Phobos::LogMessage("[Render::OnBoot] Ready.");
-        Phobos::Engine::Core::GetInstance().OnEvent(Phobos::Engine::Core::Events::RENDER_READY);
+        Phobos::LogMessage("[Render::OnInit] Ready.");
+        
     }
 
-    void Render::OnRenderReady()
+    void Render::OnStart()
     {
-        renderReady = true;
+        Phobos::LogMessage("[Render::OnStart] Initing...");
+        Phobos::LogMessage("[Render::OnStart] Load Resources...");
+        
+        texture.loadFromFile("player_male_base.png");
 
-        spr.setTexture("player_male_base.png");
-        spr.setVisible(true);
+        Phobos::LogMessage("[Render::OnStart] Done.");
     }
 
     void Render::OnUpdate()
     {
-        if (!renderReady)
-            return;
-
         auto& wnd = deimos::Window::createInstance();
         wnd.clear();
-        spr.draw();
+        //spr.draw();
 
-        /*glBegin(GL_TRIANGLES);
+        glBegin(GL_TRIANGLES);
+            texture.bind();
+            glTexCoord2f(0.f, 0.f); 
+            glVertex2f(0.f, 0.f);
             
-            glColor3f(1, 0, 0); glVertex2f(400, 0);
-            glColor3f(1, 0, 0); glVertex2f(0, 600);
-            glColor3f(1, 0, 0); glVertex2f(800, 600);
+            glTexCoord2f(0.f, texture.getHeight()); 
+            glVertex2f(0.f, texture.getHeight());
             
-            glColor3f(0, 1, 0); glVertex2f(400, 100);
-            glColor3f(0, 1, 0); glVertex2f(100, 500);
-            glColor3f(0, 1, 0); glVertex2f(700, 500);
-
-        glEnd();*/
+            glTexCoord2f(texture.getWidth(), texture.getHeight()); 
+            glVertex2f(texture.getWidth(), texture.getHeight());
+            
+            glTexCoord2f(0.f, texture.getHeight()); 
+            glVertex2f(0.f, texture.getHeight());
+            
+            glTexCoord2f(texture.getWidth(), texture.getHeight()); 
+            glVertex2f(texture.getWidth(), texture.getHeight());
+            
+            glTexCoord2f(texture.getWidth(), 0.f); 
+            glVertex2f(texture.getWidth(), 0.f);
+        glEnd();
 
         wnd.display();
     }

@@ -15,7 +15,8 @@ namespace sample_01
 
         public:
 
-            void OnBoot();
+            void OnInit() override;
+            void OnStart() override;
             void OnUpdate();
             void OnRenderReady();
 
@@ -27,8 +28,8 @@ namespace sample_01
 
         private:
 
-            bool renderReady;
             deimos::Sprite spr;
+            deimos::Texture texture;
     };
 }
 
