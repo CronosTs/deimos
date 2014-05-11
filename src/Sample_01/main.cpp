@@ -6,6 +6,7 @@
 #include <Phobos/System/Timer.h>
 #include <Phobos/Exception.h>
 #include <Phobos/Log.h>
+#include <Phobos/Engine/Session.h>
 
 #include <exception>
 
@@ -34,6 +35,9 @@ void runDeimos()
         //precisamos de uma instancia do console.
         auto& core = Phobos::Engine::Core::CreateInstance(Console::CreateInstance(), "", 0, nullptr);
         core.AddModule(sample_01::Render::CreateInstance(), Phobos::Engine::ModulePriorities::LOWEST);
+
+        auto &session = Phobos::Engine::Session::CreateInstance();
+        core.AddModule(session);
 
         core.StartMainLoop();
 

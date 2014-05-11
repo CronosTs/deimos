@@ -77,7 +77,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ImportLibrary>..\..\..\lib\$(TargetName).lib</ImportLibrary>
       <AdditionalLibraryDirectories>$(PHOBOS_HOME)\lib\;$(PHOBOS_DEPS_HOME)\lib\;$(DEIMOS_DEPS_HOME)\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>PH_Base_d.lib;PH_System_d.lib;PH_Register_d.lib;PH_Engine_d.lib;SDL_d.lib;SDL_Image_d.lib;glew_d.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>PH_Base_d.lib;PH_System_d.lib;PH_Register_d.lib;PH_Engine_d.lib;SDL_d.lib;SDL_Image_d.lib;glew_d.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -98,7 +98,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <ImportLibrary>..\..\..\lib\$(TargetName).lib</ImportLibrary>
       <AdditionalLibraryDirectories>$(PHOBOS_HOME)\lib\;$(PHOBOS_DEPS_HOME)\lib\;$(DEIMOS_DEPS_HOME)\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>PH_Base.lib;PH_System.lib;PH_Register.lib;PH_Engine.lib;SDL.lib;SDL_Image.lib;glew.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>PH_Base.lib;PH_System.lib;PH_Register.lib;PH_Engine.lib;SDL.lib;SDL_Image.lib;glew.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
     </Link>
   </ItemDefinitionGroup>

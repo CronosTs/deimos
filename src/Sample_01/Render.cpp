@@ -47,25 +47,26 @@ namespace sample_01
         wnd.clear();
         //spr.draw();
 
+        texture.bind();
+
         glBegin(GL_TRIANGLES);
-            texture.bind();
             glTexCoord2f(0.f, 0.f); 
             glVertex2f(0.f, 0.f);
             
-            glTexCoord2f(0.f, texture.getHeight()); 
-            glVertex2f(0.f, texture.getHeight());
+            glTexCoord2f(0.f, 1.f); 
+            glVertex2f(0.f, 480);
             
-            glTexCoord2f(texture.getWidth(), texture.getHeight()); 
-            glVertex2f(texture.getWidth(), texture.getHeight());
+            glTexCoord2f(1.f, 0.f);
+            glVertex2f(288, 0);
             
-            glTexCoord2f(0.f, texture.getHeight()); 
-            glVertex2f(0.f, texture.getHeight());
+            glTexCoord2f(0.f, 1.f); 
+            glVertex2f(0.f, 480);
             
-            glTexCoord2f(texture.getWidth(), texture.getHeight()); 
-            glVertex2f(texture.getWidth(), texture.getHeight());
+            glTexCoord2f(1.f, 1.f);
+            glVertex2f(288, 480);
             
-            glTexCoord2f(texture.getWidth(), 0.f); 
-            glVertex2f(texture.getWidth(), 0.f);
+            glTexCoord2f(1.f, 0.f); 
+            glVertex2f(288, 0.f);
         glEnd();
 
         wnd.display();

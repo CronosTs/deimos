@@ -4,6 +4,7 @@
 #include <SDL_Image.h>
 #include <GL/glew.h>
 #include <Phobos/Exception.h>
+#include <Phobos/Log.h>
 
 namespace deimos
 {
@@ -28,7 +29,6 @@ namespace deimos
     {
         if (m_created)
             destroy();
-
         
         SDL_Surface* image = IMG_Load(file.c_str());
         if (image == nullptr)
@@ -36,11 +36,12 @@ namespace deimos
             "Texture",
             Phobos::String_t("Could not load this file: ")
                 .append(file)
-                .append("; SDL_Image_Error: ").append(IMG_GetError()));
+                .append("; SDL_Image_Error: ")
+                .append(IMG_GetError()));
 
-        ::glGenTextures(GL_TEXTURE_2D, &m_id);
+        ::glGenTextures(1, &m_id);
         ::glBindTexture(GL_TEXTURE_2D, m_id);
-
+        
         //Ponto V rules
         int format = image->format->BytesPerPixel == 3 ? GL_RGB : GL_RGBA;
 
