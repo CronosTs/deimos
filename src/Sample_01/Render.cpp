@@ -5,6 +5,8 @@
 #include <Phobos/Singleton.h>
 #include <GL/glew.h>
 #include <Deimos/Window.hpp>
+#include <Deimos/OpenglErrorChecker.hpp>
+
 
 namespace sample_01
 {
@@ -16,6 +18,7 @@ namespace sample_01
 
     Render::~Render()
     {
+        texture.destroy();
         deimos::Window::releaseInstance();
     }
 
@@ -44,9 +47,8 @@ namespace sample_01
     void Render::OnUpdate()
     {
         auto& wnd = deimos::Window::createInstance();
-        wnd.clear();
-        //spr.draw();
 
+        wnd.clear();
         texture.bind();
 
         glBegin(GL_TRIANGLES);
@@ -67,7 +69,7 @@ namespace sample_01
             
             glTexCoord2f(1.f, 0.f); 
             glVertex2f(288, 0.f);
-        glEnd();
+        DEIMOS_GL_CHECK(glEnd());
 
         wnd.display();
     }

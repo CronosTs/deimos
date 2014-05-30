@@ -11,6 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\Core\Mesh.cpp" />
+    <ClCompile Include="..\..\..\src\Core\Renderer.cpp" />
     <ClCompile Include="..\..\..\src\Core\Sprite.cpp" />
     <ClCompile Include="..\..\..\src\Core\Texture.cpp" />
     <ClCompile Include="..\..\..\src\Core\VBO.cpp" />
@@ -18,6 +20,10 @@
     <ClCompile Include="..\..\..\src\Core\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\include\Deimos\GraphicDefs.hpp" />
+    <ClInclude Include="..\..\..\include\Deimos\Mesh.hpp" />
+    <ClInclude Include="..\..\..\include\Deimos\OpenglErrorChecker.hpp" />
+    <ClInclude Include="..\..\..\include\Deimos\Renderer.hpp" />
     <ClInclude Include="..\..\..\include\Deimos\Sprite.hpp" />
     <ClInclude Include="..\..\..\include\Deimos\Texture.hpp" />
     <ClInclude Include="..\..\..\include\Deimos\VBO.hpp" />

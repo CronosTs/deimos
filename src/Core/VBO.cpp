@@ -1,4 +1,5 @@
 #include "VBO.hpp"
+#include "GraphicDefs.hpp"
 
 #include <GL/glew.h>
 
@@ -25,32 +26,33 @@ namespace deimos
 
     static GLModeToVBO glToVBOMode[] =
     {
-        { VBODrawMode::TRIANGLE, GL_TRIANGLES },
-        { VBODrawMode::TRIANGLE_STRIP, GL_TRIANGLE_STRIP },
-        { VBODrawMode::TRIANGLE_FAN, GL_TRIANGLE_FAN },
-        { VBODrawMode::LINE, GL_LINE },
-        { VBODrawMode::LINE_LOOP, GL_LINE_LOOP },
-        { VBODrawMode::LINE_STRIP, GL_LINE_STRIP }
+        { Primitives::TRIANGLES,        GL_TRIANGLES },
+        { Primitives::TRIANGLE_STRIP,   GL_TRIANGLE_STRIP },
+        { Primitives::TRIANGLE_FAN,     GL_TRIANGLE_FAN },
+        { Primitives::LINES,            GL_LINE },
+        { Primitives::LINE_LOOP,        GL_LINE_LOOP },
+        { Primitives::LINE_STRIP,       GL_LINE_STRIP }
     };
 
     static GLTargetToVBOTarget glToVBOTarget[] =
     {
-        { VBOTarget::STATIC, GL_STATIC_DRAW },
+        { VBOTarget::STATIC,  GL_STATIC_DRAW },
         { VBOTarget::DYNAMIC, GL_DYNAMIC_DRAW },
-        { VBOTarget::STREAM, GL_STREAM_DRAW }
+        { VBOTarget::STREAM,  GL_STREAM_DRAW }
     };
 
     static GLDataTypeToVBO glDataTypeToVBO[] =
     {
-        { VBODataType::SHORT, GL_SHORT },
-        { VBODataType::INT, GL_INT },
-        { VBODataType::FLOAT, GL_FLOAT },
-        { VBODataType::DOUBLE, GL_DOUBLE }
+        { VBODataType::SHORT,   GL_SHORT },
+        { VBODataType::INT,     GL_INT },
+        { VBODataType::FLOAT,   GL_FLOAT },
+        { VBODataType::DOUBLE,  GL_DOUBLE }
     };
 
-    VBO::VBO():
+    VBO::VBO() :
         m_created(false),
-        m_id(0)
+        m_id(0),
+        m_size(0)
     {}
 
     VBO::VBO(const VBOData& data, int vboTarget,
@@ -64,9 +66,6 @@ namespace deimos
         configVertex(vertexConfig);
         configColor(colorConfig);
         configTexture(textureConfig);
-
-        if (freeClientData)
-            free();
     }
 
     VBO::~VBO()
@@ -91,59 +90,46 @@ namespace deimos
 
         ::glDeleteBuffers(1, &m_id);
         m_created = false;
+        m_size = 0;
     }
 
-    void VBO::bind()
+    void VBO::bind() const
     {
         if (m_created)
             ::glBindBuffer(GL_ARRAY_BUFFER, m_id);
     }
 
-    void VBO::unbind()
+    void VBO::unbind() const
     {
         //that is the proof that id is always > 0
         ::glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
-    void VBO::free()
-    {
-        if (!m_created)
-            return;
-
-        m_data.resize(0);
-    }
-
-    void VBO::upload(const VBOData& data, int vbotarget)
+    void VBO::upload(const VBOData& data, int vboTarget)
     {
         //TODO: throw exception
         if (!m_created || data.empty())
             return;
 
-        m_data.clear();
-        m_data.resize(data.size());
-
-        //copy data
-        std::copy(data.begin(), data.end(), m_data.begin());
-
-        doUpload(vbotarget);
+        if (m_size <= 0)
+            m_size = data.size();
         
-    }
-
-    void VBO::doUpload(int vboTarget)
-    {
         bind();
-        ::glBufferData(GL_ARRAY_BUFFER, m_data.size(),
-            static_cast<void*>(&m_data[0]),
+        ::glBufferData(GL_ARRAY_BUFFER, data.size(),
+            static_cast<const void*>(&data[0]),
             glToVBOTarget[vboTarget].glTarget);
     }
 
-    void VBO::draw(int drawMode, int start, int count)
+    void VBO::draw(int drawMode, int start, int count) const
     {
         if (!m_created)
             return;
 
+        if (start < 0)
+            return; //TODO: throw exceptions
+
         if (count <= 0)
-            count = m_data.size();
+            count = m_size;
 
         bind();
         ::glDrawArrays(glToVBOMode[drawMode].glMode, start, count);

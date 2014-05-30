@@ -1,5 +1,7 @@
 #include "Sprite.hpp"
 
+#include "GraphicDefs.hpp"
+
 namespace deimos
 {
     Sprite::Sprite():
@@ -24,7 +26,7 @@ namespace deimos
             return;
 
         m_texture->bind();
-        m_vbo.draw(VBODrawMode::TRIANGLE, 0, 2);
+        m_vbo.draw(Primitives::TRIANGLES, 0, 2);
     }
 
     void Sprite::setRect(const FRect& rect)
@@ -65,7 +67,6 @@ namespace deimos
         m_vbo.upload(data, VBOTarget::STATIC);
         m_vbo.configVertex(VBOConfig(2, VBODataType::FLOAT, sizeof(Vertex), 0));
         m_vbo.configTexture(VBOConfig(2, VBODataType::FLOAT, sizeof(Vertex), 8));
-        m_vbo.free(); //destroy the local copy
     }
 
     void Sprite::setTexture(TexturePtr_t& texture)

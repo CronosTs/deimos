@@ -30,16 +30,6 @@ namespace deimos
         STREAM
     };
 
-    enum VBODrawMode
-    {
-        TRIANGLE,
-        TRIANGLE_STRIP,
-        TRIANGLE_FAN,
-        LINE,
-        LINE_LOOP,
-        LINE_STRIP
-    };
-
     struct VBOConfig
     {
         VBOConfig() :
@@ -72,7 +62,6 @@ namespace deimos
             typedef std::vector<char> VBOData;
 
             VBO();
-
             VBO(const VBOData& data, int vboTarget,
                 const VBOConfig& vertexConfig,
                 const VBOConfig& colorConfig,
@@ -82,20 +71,30 @@ namespace deimos
             ~VBO();
 
             void create();
-            void destroy(); //destroy the buffer and free data from gpu side
-            void bind();
-            void unbind();
-            void free(); //free data from client side
+            void destroy(); //destroy the bufferr
+            void bind() const;
+            void unbind() const;
             void upload(const VBOData& data, int vboTarget);
-            void draw(int drawMode, int start = 0, int count = -1);
+            void draw(int drawMode, int start = 0, int count = 0) const;
             void configVertex(const VBOConfig& cfg);
             void configTexture(const VBOConfig& cfg);
             void configColor(const VBOConfig& cfg);
 
+            bool HasCreated() const
+            {
+                return m_created;
+            }
+
             template <class T>
             void upload(const std::vector<T>& vboData, int vboTarget)
             {
-                m_data.resize(vboData.size() * sizeof(T));
+                m_size = vboData.size();
+
+                if (m_size <= 0)
+                    return; //TODO: throw exception
+
+                VBOData data;
+                data.resize(vboData.size() * sizeof(T));
 
                 const char *start = reinterpret_cast<const char*>(&vboData[0]), 
                            *end   = reinterpret_cast<const char*>(&vboData[vboData.size()])
@@ -103,9 +102,9 @@ namespace deimos
 
                 std::copy(start,  //first adress
                           end,    //last adress. TODO: verify if this is the correct adress
-                          std::back_inserter(m_data));
+                          std::back_inserter(data));
 
-                doUpload(vboTarget);
+                upload(data, vboTarget);
             }
 
         protected:
@@ -117,15 +116,12 @@ namespace deimos
 
         private:
 
-            void doUpload(int vbotarget);
-
             //non copyable
             VBO(const VBO&);
 
             unsigned int m_id; //id is always > 0
+            unsigned int m_size;
             bool m_created;
-            VBOData m_data;
-
     };
 }
 

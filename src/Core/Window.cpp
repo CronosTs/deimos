@@ -6,7 +6,7 @@
 #include <SDL.h>
 #include <memory>
 #include <GL/glew.h>
-//#include <GL/GLU.h>
+#include <OpenglErrorChecker.hpp>
 
 namespace deimos
 {
@@ -49,15 +49,16 @@ namespace deimos
         Phobos::LogMessage("Configuring opengl context...");
 
         GLenum error = glewInit();
-
         if (error != GLEW_OK)
             PH_RAISE(Phobos::ExceptionTypes::NATIVE_API_FAILED_EXCEPTION,
                     "Render",
                     "GLEW initialization failed...");
 
-        glOrtho(0, getWidth(), getHeight(), 0, 0, 500);
-        glViewport(0, 0, getWidth(), getHeight());
-        glClearColor(0, 0, 0, 1);
+        DEIMOS_GL_CHECK(::glOrtho(0, getWidth(), getHeight(), 0, 0, 500));
+        DEIMOS_GL_CHECK(::glViewport(0, 0, getWidth(), getHeight()));
+        DEIMOS_GL_CHECK(::glClearColor(0, 0, 0, 1));
+        DEIMOS_GL_CHECK(::glEnable(GL_DEPTH_TEST));
+        DEIMOS_GL_CHECK(::glClearDepth(1.f));
     }
 
     int Window::getWidth()
@@ -72,12 +73,12 @@ namespace deimos
 
     void Window::setClearColor(int r, int g, int b, int a)
     {
-        glClearColor(r / 255.f, g / 255.f, b / 255.f, a / 255.f);
+        DEIMOS_GL_CHECK(::glClearColor(r / 255.f, g / 255.f, b / 255.f, a / 255.f));
     }
 
     void Window::clear()
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        DEIMOS_GL_CHECK(::glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
     }
 
     void Window::display()

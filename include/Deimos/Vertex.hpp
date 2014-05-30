@@ -6,7 +6,7 @@
 
 namespace deimos
 {
-    //TODO: fixe msvb align problem !!!
+    //TODO: fixe msvc align problem !!!
     struct Vertex
     {
         Vertex(){}
