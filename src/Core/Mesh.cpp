@@ -1,20 +1,23 @@
 #include "Mesh.hpp"
 
 #include "Renderer.hpp"
+#include "GraphicDefs.hpp"
 
 namespace  deimos
 {
-    Mesh::Mesh()
+    Mesh::Mesh() :
+        m_size(0)
     {}
 
     Mesh::Mesh(const std::vector<Vertex>& vertex):
-        m_vertex(vertex)
+        m_vertex(vertex),
+        m_size(vertex.size())
     {}
 
     Mesh::~Mesh()
     {}
 
-    void Mesh::Draw(int offset, int count) const
+    void Mesh::Draw(int primitive, int offset, int count) const
     {
         if (count <= 0)
             count = m_vertex.size();
@@ -23,9 +26,9 @@ namespace  deimos
             offset = 0;
 
         if (m_vbo.HasCreated())
-            Renderer::Draw(m_vbo, 0, offset, count);
+            Renderer::Draw(m_vbo, primitive, offset, count);
         else
-            Renderer::Draw(m_vertex, 0, offset, count);
+            Renderer::Draw(m_vertex, primitive, offset, count);
     }
 
     void Mesh::CreateVertexBuffer(bool freeLocalContent)
@@ -34,7 +37,7 @@ namespace  deimos
             return;
 
         m_vbo.create(); //maybe this is redundant
-        m_vbo.upload(m_vertex, VBOTarget::STATIC); //VBO is duplicating data!!!!
+        m_vbo.upload(m_vertex, VBOTarget::STATIC);
 
         if (freeLocalContent)
             m_vertex.resize(0);
@@ -43,5 +46,6 @@ namespace  deimos
     void Mesh::SetVertexData(const std::vector<Vertex>& vertex)
     {
         m_vertex = vertex;
+        m_size = m_vertex.size();
     }
 }

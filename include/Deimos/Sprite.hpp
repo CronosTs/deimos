@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "Texture.hpp"
-#include "VBO.hpp"
+#include "Mesh.hpp"
 #include "Vertex.hpp"
 
 namespace deimos
@@ -51,7 +51,7 @@ namespace deimos
             bool m_visible;
             FRect m_rect;
             std::shared_ptr<Texture> m_texture;
-            VBO m_vbo;
+            Mesh m_mesh;
     };
 }
 

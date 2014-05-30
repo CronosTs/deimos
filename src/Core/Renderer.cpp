@@ -12,10 +12,10 @@ namespace deimos
         {
             const fvec2& position   = vertex[i].position,
                          texture    = vertex[i].texture;
-            const ivec3& color      = vertex[i].color;
+            const ubvec4& color     = vertex[i].color;
 
-            //r, g, b
-            ::glColor3i(color.x, color.y, color.z); //alpha ????
+            //r, g, b, alpha
+            //::glColor4ub(color.x, color.y, color.z, 0); //it's broken
             ::glTexCoord2f(texture.x, texture.y);
             ::glVertex2f(position.x, position.y);
         }

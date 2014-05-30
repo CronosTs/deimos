@@ -13,7 +13,7 @@ namespace deimos
         
         Vertex(const fvec2& pos,
                const fvec2& tex,
-               const ivec3& col):
+               const ubvec4& col):
             position(pos),
             texture(tex),
             color(col)
@@ -21,7 +21,7 @@ namespace deimos
 
         fvec2 position,
               texture;
-        ivec3 color;
+        ubvec4 color;
     };
 }
 

@@ -18,7 +18,6 @@ namespace sample_01
 
     Render::~Render()
     {
-        texture.destroy();
         deimos::Window::releaseInstance();
     }
 
@@ -38,8 +37,8 @@ namespace sample_01
     {
         Phobos::LogMessage("[Render::OnStart] Initing...");
         Phobos::LogMessage("[Render::OnStart] Load Resources...");
-        
-        texture.loadFromFile("player_male_base.png");
+
+        m_sprite.setTexture("player_male_base.png");
 
         Phobos::LogMessage("[Render::OnStart] Done.");
     }
@@ -49,8 +48,8 @@ namespace sample_01
         auto& wnd = deimos::Window::createInstance();
 
         wnd.clear();
-        texture.bind();
 
+        /*texture.bind();
         glBegin(GL_TRIANGLES);
             glTexCoord2f(0.f, 0.f); 
             glVertex2f(0.f, 0.f);
@@ -69,7 +68,9 @@ namespace sample_01
             
             glTexCoord2f(1.f, 0.f); 
             glVertex2f(288, 0.f);
-        DEIMOS_GL_CHECK(glEnd());
+        DEIMOS_GL_CHECK(glEnd());*/
+
+        m_sprite.draw();
 
         wnd.display();
     }

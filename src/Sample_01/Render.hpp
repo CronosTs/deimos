@@ -28,8 +28,7 @@ namespace sample_01
 
         private:
 
-            deimos::Sprite spr;
-            deimos::Texture texture;
+            deimos::Sprite m_sprite;
     };
 }
 

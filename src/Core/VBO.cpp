@@ -135,7 +135,7 @@ namespace deimos
         ::glDrawArrays(glToVBOMode[drawMode].glMode, start, count);
     }
 
-    void VBO::configVertex(const VBOConfig& cfg)
+    void VBO::configVertex(const VBOConfig& cfg) const
     {
         if (!m_created)
             return;
@@ -147,7 +147,7 @@ namespace deimos
             reinterpret_cast<void *>(cfg.pointer));
     }
 
-    void VBO::configTexture(const VBOConfig& cfg)
+    void VBO::configTexture(const VBOConfig& cfg) const
     {
         if (!m_created)
             return;
@@ -159,7 +159,7 @@ namespace deimos
             reinterpret_cast<void *>(cfg.pointer));
     }
 
-    void VBO::configColor(const VBOConfig& cfg)
+    void VBO::configColor(const VBOConfig& cfg) const
     {
         if (!m_created)
             return;

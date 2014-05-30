@@ -51,6 +51,10 @@ namespace deimos
     typedef Vector2d<int> ivec2;
     typedef Vector3d<int> ivec3;
     typedef Vector4d<int> ivec4;
+
+    typedef Vector2d<unsigned char> ubvec2;
+    typedef Vector3d<unsigned char> ubvec3;
+    typedef Vector4d<unsigned char> ubvec4;
 }
 
 #endif

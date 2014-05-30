@@ -76,9 +76,9 @@ namespace deimos
             void unbind() const;
             void upload(const VBOData& data, int vboTarget);
             void draw(int drawMode, int start = 0, int count = 0) const;
-            void configVertex(const VBOConfig& cfg);
-            void configTexture(const VBOConfig& cfg);
-            void configColor(const VBOConfig& cfg);
+            void configVertex(const VBOConfig& cfg) const;
+            void configTexture(const VBOConfig& cfg) const;
+            void configColor(const VBOConfig& cfg) const;
 
             bool HasCreated() const
             {
