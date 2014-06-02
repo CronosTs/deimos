@@ -85,6 +85,7 @@ namespace deimos
         DEIMOS_GL_CHECK(::glGenBuffers(1, &m_id));
         m_created = true;
         DEIMOS_GL_CHECK(::glEnableClientState(GL_VERTEX_ARRAY));
+        DEIMOS_GL_CHECK(glEnableClientState(GL_TEXTURE_COORD_ARRAY));
     }
 
     void VBO::destroy()

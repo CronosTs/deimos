@@ -1,5 +1,6 @@
 #include "Renderer.hpp"
 #include "GraphicDefs.hpp"
+#include "OpenglErrorChecker.hpp"
 
 #include <GL/glew.h>
 
@@ -19,7 +20,7 @@ namespace deimos
             ::glTexCoord2f(texture.x, texture.y);
             ::glVertex2f(position.x, position.y);
         }
-        ::glEnd();
+        DEIMOS_GL_CHECK(::glEnd());
     }
     
     void Renderer::Draw(const VBO& vbo, int primitive, int offset, int size)
