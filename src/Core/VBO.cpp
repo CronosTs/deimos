@@ -1,37 +1,41 @@
 #include "VBO.hpp"
 #include "GraphicDefs.hpp"
-
-#include <GL/glew.h>
+#include "OpenglErrorChecker.hpp"
 
 namespace deimos
 {
 
     struct GLTargetToVBOTarget
     {
-        int glTarget;
         int vbotarget;
+        int glTarget;
     };
 
     struct GLModeToVBO
     {
-        int glMode;
         int vboMode;
+        int glMode;
     };
 
     struct GLDataTypeToVBO
     {
-        int glType,
-        vboType;
+        int vboType;
+        int glType;
     };
 
+    //default behavior is to draw lines!!!
     static GLModeToVBO glToVBOMode[] =
     {
+        { Primitives::POINTS,           GL_LINES },
+        { Primitives::LINES,            GL_LINES },
+        { Primitives::LINE_STRIP,       GL_LINE_STRIP },
+        { Primitives::LINE_LOOP,        GL_LINE_LOOP },
         { Primitives::TRIANGLES,        GL_TRIANGLES },
         { Primitives::TRIANGLE_STRIP,   GL_TRIANGLE_STRIP },
-        { Primitives::TRIANGLE_FAN,     GL_TRIANGLE_FAN },
-        { Primitives::LINES,            GL_LINE },
-        { Primitives::LINE_LOOP,        GL_LINE_LOOP },
-        { Primitives::LINE_STRIP,       GL_LINE_STRIP }
+        { Primitives::TRIANGLE_FAN,     GL_TRIANGLE_FAN},
+        { Primitives::QUADS,            GL_LINES },
+        { Primitives::QUAD_STRIP,       GL_LINES },
+        { Primitives::POLYGON,          GL_LINES }
     };
 
     static GLTargetToVBOTarget glToVBOTarget[] =
@@ -78,9 +82,9 @@ namespace deimos
         if (m_created)
             destroy();
 
-        ::glGenBuffers(1, &m_id);
+        DEIMOS_GL_CHECK(::glGenBuffers(1, &m_id));
         m_created = true;
-        ::glEnable(GL_VERTEX_ARRAY);
+        DEIMOS_GL_CHECK(::glEnableClientState(GL_VERTEX_ARRAY));
     }
 
     void VBO::destroy()
@@ -96,13 +100,13 @@ namespace deimos
     void VBO::bind() const
     {
         if (m_created)
-            ::glBindBuffer(GL_ARRAY_BUFFER, m_id);
+            DEIMOS_GL_CHECK(::glBindBuffer(GL_ARRAY_BUFFER, m_id));
     }
 
     void VBO::unbind() const
     {
         //that is the proof that id is always > 0
-        ::glBindBuffer(GL_ARRAY_BUFFER, 0);
+        DEIMOS_GL_CHECK(::glBindBuffer(GL_ARRAY_BUFFER, 0));
     }
 
     void VBO::upload(const VBOData& data, int vboTarget)
@@ -115,9 +119,9 @@ namespace deimos
             m_size = data.size();
         
         bind();
-        ::glBufferData(GL_ARRAY_BUFFER, data.size(),
+        DEIMOS_GL_CHECK(::glBufferData(GL_ARRAY_BUFFER, data.size(),
             static_cast<const void*>(&data[0]),
-            glToVBOTarget[vboTarget].glTarget);
+            glToVBOTarget[vboTarget].glTarget));
     }
 
     void VBO::draw(int drawMode, int start, int count) const
@@ -131,8 +135,10 @@ namespace deimos
         if (count <= 0)
             count = m_size;
 
+        //TODO: assertion HERE!!!: drawMode < LINES and drawMode > TRIANGLE_FAN
+
         bind();
-        ::glDrawArrays(glToVBOMode[drawMode].glMode, start, count);
+        DEIMOS_GL_CHECK(::glDrawArrays(glToVBOMode[drawMode].glMode, start, count));
     }
 
     void VBO::configVertex(const VBOConfig& cfg) const
@@ -141,10 +147,10 @@ namespace deimos
             return;
 
         bind();
-        ::glVertexPointer(cfg.size,
+        DEIMOS_GL_CHECK(::glVertexPointer(cfg.size,
             glDataTypeToVBO[cfg.type].glType,
             cfg.stride,
-            reinterpret_cast<void *>(cfg.pointer));
+            reinterpret_cast<void *>(cfg.pointer)));
     }
 
     void VBO::configTexture(const VBOConfig& cfg) const
@@ -153,10 +159,10 @@ namespace deimos
             return;
 
         bind();
-        ::glTexCoordPointer(cfg.size,
+        DEIMOS_GL_CHECK(::glTexCoordPointer(cfg.size,
             glDataTypeToVBO[cfg.type].glType,
             cfg.stride,
-            reinterpret_cast<void *>(cfg.pointer));
+            reinterpret_cast<void *>(cfg.pointer)));
     }
 
     void VBO::configColor(const VBOConfig& cfg) const
@@ -165,9 +171,9 @@ namespace deimos
             return;
 
         bind();
-        ::glColorPointer(cfg.size,
+        DEIMOS_GL_CHECK(::glColorPointer(cfg.size,
             glDataTypeToVBO[cfg.type].glType,
             cfg.stride,
-            reinterpret_cast<void *>(cfg.pointer));
+            reinterpret_cast<void *>(cfg.pointer)));
     }
 }

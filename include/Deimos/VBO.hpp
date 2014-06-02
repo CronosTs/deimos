@@ -94,10 +94,10 @@ namespace deimos
                     return; //TODO: throw exception
 
                 VBOData data;
-                data.resize(vboData.size() * sizeof(T));
+                data.reserve(vboData.size() * sizeof(T));
 
                 const char *start = reinterpret_cast<const char*>(&vboData[0]), 
-                           *end   = reinterpret_cast<const char*>(&vboData[vboData.size()])
+                           *end   = reinterpret_cast<const char*>(&vboData[vboData.size()-1])
                                     + sizeof(T);
 
                 std::copy(start,  //first adress

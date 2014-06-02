@@ -42,9 +42,10 @@ namespace deimos
             inline void setVisible(bool);
             void draw();
             void setRect(const FRect&);
-            void setTexture(TexturePtr_t&);
-            void setTexture(const Phobos::String_t&);
+            void setTexture(TexturePtr_t&, const FRect& = FRect());
+            void setTexture(const Phobos::String_t&, const FRect& = FRect());
             TexturePtr_t getTexture();
+            
 
         private:
 

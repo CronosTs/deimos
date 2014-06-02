@@ -3,6 +3,8 @@
 
 #ifdef PH_DEBUG
 
+#include <Phobos/Log.h>
+#include <GL/glew.h>
 #include <sstream>
 
 #define DEIMOS_GL_CHECK(x)                                          \

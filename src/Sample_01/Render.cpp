@@ -30,7 +30,6 @@ namespace sample_01
         deimos::Window::createInstance().clear();
         
         Phobos::LogMessage("[Render::OnInit] Ready.");
-        
     }
 
     void Render::OnStart()
@@ -39,8 +38,11 @@ namespace sample_01
         Phobos::LogMessage("[Render::OnStart] Load Resources...");
 
         m_sprite.setTexture("player_male_base.png");
+        m_sprite.setRect(deimos::Sprite::FRect(21, 6, 20, 54));
 
         Phobos::LogMessage("[Render::OnStart] Done.");
+
+        glMatrixMode(GL_MODELVIEW);
     }
 
     void Render::OnUpdate()
@@ -70,7 +72,10 @@ namespace sample_01
             glVertex2f(288, 0.f);
         DEIMOS_GL_CHECK(glEnd());*/
 
+        glPushMatrix();
+        glScalef(0.5f, 0.5f, 1);
         m_sprite.draw();
+        glPopMatrix();
 
         wnd.display();
     }
