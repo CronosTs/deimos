@@ -72,9 +72,6 @@ namespace deimos
         data.push_back(quad.t2);
 
         m_mesh.SetVertexData(data);
-
-        Vertex v;
-
         m_mesh.CreateVertexBuffer(true); //don't work
         m_mesh.GetBuffer().configVertex(VBOConfig(2, VBODataType::FLOAT, sizeof(Vertex), 0));
         m_mesh.GetBuffer().configTexture(VBOConfig(2, VBODataType::FLOAT, sizeof(Vertex), 8));
