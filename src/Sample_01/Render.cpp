@@ -1,11 +1,19 @@
 #include "Render.hpp"
 
+#include <Deimos/Window.hpp>
+#include <Deimos/OpenglErrorChecker.hpp>
+
 #include <Phobos/Log.h>
 #include <Phobos/Engine/Core.h>
 #include <Phobos/Singleton.h>
+#include <Phobos/Register/Manager.h>
+#include <Phobos/Register/Hive.h>
+#include <Phobos/Register/Table.h>
+
 #include <GL/glew.h>
-#include <Deimos/Window.hpp>
-#include <Deimos/OpenglErrorChecker.hpp>
+
+#include <fstream>
+
 
 
 namespace sample_01
@@ -39,6 +47,13 @@ namespace sample_01
 
         m_sprite.setTexture("player_male_base.png");
         m_sprite.setRect(deimos::Sprite::FRect(21, 6, 20, 54));
+        m_animSprite.SetTexture(m_sprite.getTexture());
+
+        //load animations
+        Phobos::LogMessage("[Render::OnStart] Loading assets.");
+        m_animSprite.LoadAnimation("player.conf");
+        m_animSprite.SetCurrentAnimation("WalkDown");
+        
 
         Phobos::LogMessage("[Render::OnStart] Done.");
 
@@ -48,7 +63,6 @@ namespace sample_01
     void Render::OnUpdate()
     {
         auto& wnd = deimos::Window::createInstance();
-
         wnd.clear();
 
         /*texture.bind();
@@ -72,10 +86,13 @@ namespace sample_01
             glVertex2f(288, 0.f);
         DEIMOS_GL_CHECK(glEnd());*/
 
-        glPushMatrix();
+        /*glPushMatrix();
         glScalef(0.5f, 0.5f, 1);
         m_sprite.draw();
-        glPopMatrix();
+        glPopMatrix();*/
+
+        m_animSprite.Update();
+        m_animSprite.Draw();
 
         wnd.display();
     }

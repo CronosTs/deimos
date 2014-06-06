@@ -37,6 +37,19 @@ namespace deimos
             void SetTime(float); // time between frames
             void SetTexture(TexturePtr_t&);
             void SetTexture(const Phobos::String_t&);
+            void Reset(); //reset fo frame 0 of the current animation
+            void PlayAnimation(bool playAnim = true);
+            void LoadAnimation(const Phobos::String_t&);
+            
+            inline void SetVisible(bool visible = true)
+            {
+                m_visible = visible;
+            }
+
+            inline void SetReverseMode(bool reverseMode = true)
+            {
+                m_reverse = reverseMode;
+            }
 
             inline float GetCurrentTime()
             {
@@ -61,17 +74,21 @@ namespace deimos
         private:
 
             std::vector<Vertex> FrameToVertex(Frame& frame);
+            
+            bool m_visible,
+                 m_playAnim,
+                 m_reverse;
+            float m_time; //time between frames
+            int m_currentFrame;
 
             //we store just the name and the indices. The frames will be in
             //the mesh.
             std::map<Phobos::String_t, std::vector<int>> m_animations;
             Mesh m_mesh;
             TexturePtr_t m_texture;
-            float m_time; //time between frames
-            int m_currentFrame;
             Phobos::String_t m_currentAnimation;
             Phobos::System::Timer m_timer;
-
+            
     };
 }
 

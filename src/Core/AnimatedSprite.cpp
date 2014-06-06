@@ -2,10 +2,20 @@
 
 #include "GraphicDefs.hpp"
 
+#include <Phobos/Register/Manager.h>
+#include <Phobos/Register/Table.h>
+#include <Phobos/Register/Hive.h>
+
+#include <fstream>
+#include <iostream>
+
 namespace deimos
 {
     AnimatedSprite::AnimatedSprite():
-        m_time(0),
+        m_visible(true),
+        m_playAnim(true),
+        m_reverse(false),
+        m_time(0.5f),
         m_currentFrame(0)
     {
         m_timer.Reset();
@@ -16,19 +26,36 @@ namespace deimos
 
     void AnimatedSprite::Draw()
     {
+        if (!m_visible)
+            return;
+
         auto meshIndex = m_animations[m_currentAnimation][m_currentFrame];
-        m_mesh.Draw(Primitives::TRIANGLES, meshIndex, 6);
+        m_mesh.Draw(Primitives::TRIANGLES, meshIndex*6, 6);
     }
 
     void AnimatedSprite::Update()
     {
+        if (!m_playAnim)
+            return;
+
+        float elapsedTime = m_timer.Elapsed();
+
         if (m_timer.Elapsed() < m_time)
             return;
 
         //inc frames 
-        m_currentFrame++;
-        if (m_currentFrame >= m_animations[m_currentAnimation].size())
-            m_currentFrame = 0;
+        if (m_reverse)
+        {
+            m_currentFrame--;
+            if (m_currentFrame < 0)
+                m_currentFrame = m_animations[m_currentAnimation].size()-1;
+        }
+        else
+        {
+            m_currentFrame++;
+            if (m_currentFrame >= m_animations[m_currentAnimation].size())
+                m_currentFrame = 0;
+        }
 
         m_timer.Reset();
     }
@@ -78,6 +105,7 @@ namespace deimos
         }
 
         m_mesh.SetVertexData(vertex);
+        m_currentAnimation = m_animations.begin()->first;
     }
 
     void AnimatedSprite::SetTime(float time)
@@ -93,6 +121,86 @@ namespace deimos
     void AnimatedSprite::SetTexture(const Phobos::String_t& img)
     {
         SetTexture(std::make_shared<Texture>(img));
+    }
+
+    void AnimatedSprite::Reset()
+    {
+        m_timer.Reset();
+        m_currentFrame = 0;
+    }
+
+    void AnimatedSprite::PlayAnimation(bool playAnim)
+    {
+        m_playAnim = playAnim;
+        m_timer.Reset();
+    }
+
+    void AnimatedSprite::LoadAnimation(const Phobos::String_t& file)
+    {
+        Phobos::Register::Init();
+
+        std::ifstream ifs(file);
+        Phobos::Register::Load(ifs);
+
+        float frameWidth = 0,
+              frameHeight = 0;
+        //int startIndex = 0;
+        auto &entityDef = Phobos::Register::GetTable("EntityDef", "InfoPlayerAnimation");
+        
+        frameWidth = entityDef.GetFloat("FrameWidth");
+        frameHeight = entityDef.GetFloat("FrameHeight");
+        //startIndex = entityDef.GetInt("StartIndex");
+        SetTexture(entityDef.GetString("ImageFile"));
+
+        auto &allEntity = Phobos::Register::GetHive("EntityDef");
+        auto &nodes = allEntity.GetNodes();
+
+        Animations animations;
+        int framesPerWidth = m_texture->getWidth() / frameWidth;
+        for (auto i = nodes.begin(); i != nodes.end(); ++i)
+        {
+            auto *table = static_cast<Phobos::Register::Table*>(i->second);
+            if (table->GetString("Type").compare("animation") == 0)
+            {
+                //TODO: it can be turned into only one!!!
+                if (table->TryGetString("Index"))
+                {
+                    //only one frame
+                    int index = table->GetInt("Index"),
+                        x = index % framesPerWidth,
+                        y = index / framesPerWidth;
+
+                    x *= frameWidth;
+                    y *= frameHeight;
+
+                    Frame frame(x, y, frameWidth, frameHeight);
+                    animations[table->GetName()].push_back(frame);
+                }
+                else if (table->TryGetString("StartIndex") && 
+                         table->TryGetString("EndIndex"))
+                {
+                    //more than one frame
+                    int startIndex = table->GetInt("StartIndex"),
+                        endIndex   = table->GetInt("EndIndex");
+
+                    for (int index = startIndex; index <= endIndex; index++)
+                    {
+                        int x = index % framesPerWidth,
+                            y = index / framesPerWidth;
+
+                        x *= frameWidth;
+                        y *= frameHeight;
+
+                        Frame frame(x, y, frameWidth, frameHeight);
+                        animations[table->GetName()].push_back(frame);
+                    }
+                }
+            }
+        }
+
+        SetAnimations(animations);
+        
+        Phobos::Register::Finalize();
     }
 
     std::vector<Vertex> AnimatedSprite::FrameToVertex(Frame& frame)
@@ -125,10 +233,10 @@ namespace deimos
         t3.texture.x = frame.m_tOrigin[0] / width;
         t3.texture.y = (frame.m_tOrigin[1] + frame.m_tSize.m_tHeight) / height;
 
-        t1.position.x = frame.m_tSize.m_tWidth;
-        t1.position.y = frame.m_tSize.m_tHeight;
-        t1.texture.x = (frame.m_tOrigin[0] + frame.m_tSize.m_tWidth) / width;
-        t1.texture.y = (frame.m_tOrigin[1] + frame.m_tSize.m_tHeight) / height;
+        t4.position.x = frame.m_tSize.m_tWidth;
+        t4.position.y = frame.m_tSize.m_tHeight;
+        t4.texture.x = (frame.m_tOrigin[0] + frame.m_tSize.m_tWidth) / width;
+        t4.texture.y = (frame.m_tOrigin[1] + frame.m_tSize.m_tHeight) / height;
 
         std::vector<Vertex> meshVector;
         meshVector.reserve(4);

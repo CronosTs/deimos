@@ -4,6 +4,9 @@
 #include <Phobos/Engine/Module.h>
 #include <Phobos/Singleton.h>
 #include <Deimos/Sprite.hpp>
+#include <Deimos/AnimatedSprite.hpp>
+
+#include <Phobos/System/Timer.h>
 
 namespace sample_01
 {
@@ -29,6 +32,7 @@ namespace sample_01
         private:
 
             deimos::Sprite m_sprite;
+            deimos::AnimatedSprite m_animSprite;
     };
 }
 
