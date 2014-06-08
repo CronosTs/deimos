@@ -34,7 +34,7 @@ namespace deimos
             void SetCurrentAnimation(const Phobos::String_t&);
             void SetCurrentFrame(int); //unsigned ?
             void SetAnimations(const Animations&);
-            void SetTime(float); // time between frames
+            void SetDelay(float); // time between frames
             void SetTexture(TexturePtr_t&);
             void SetTexture(const Phobos::String_t&);
             void Reset(); //reset fo frame 0 of the current animation
@@ -51,9 +51,9 @@ namespace deimos
                 m_reverse = reverseMode;
             }
 
-            inline float GetCurrentTime()
+            inline float GetDelay()
             {
-                return m_time;
+                return m_delay;
             }
 
             inline int GetCurrentFrame()
@@ -78,7 +78,7 @@ namespace deimos
             bool m_visible,
                  m_playAnim,
                  m_reverse;
-            float m_time; //time between frames
+            float m_delay;
             int m_currentFrame;
 
             //we store just the name and the indices. The frames will be in

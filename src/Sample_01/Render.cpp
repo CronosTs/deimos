@@ -52,8 +52,8 @@ namespace sample_01
         //load animations
         Phobos::LogMessage("[Render::OnStart] Loading assets.");
         m_animSprite.LoadAnimation("player.conf");
-        m_animSprite.SetCurrentAnimation("StandUp");
-        
+        m_animSprite.SetCurrentAnimation("WalkDown");
+        m_animSprite.SetDelay(0.075);
 
         Phobos::LogMessage("[Render::OnStart] Done.");
 

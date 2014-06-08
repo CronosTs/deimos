@@ -5,20 +5,22 @@
 #include <Phobos/Register/Manager.h>
 #include <Phobos/Register/Table.h>
 #include <Phobos/Register/Hive.h>
+#include <Phobos/Log.h>
 
 #include <fstream>
 #include <iostream>
+#include <sstream>
 
 namespace deimos
 {
-    AnimatedSprite::AnimatedSprite():
+    AnimatedSprite::AnimatedSprite() :
         m_visible(true),
         m_playAnim(true),
         m_reverse(false),
-        m_time(0.5f),
+        m_delay(0.5f),
         m_currentFrame(0)
     {
-        m_timer.Reset();
+        m_timer.SetMinInterval(m_delay);
     }
 
     AnimatedSprite::~AnimatedSprite()
@@ -38,9 +40,7 @@ namespace deimos
         if (!m_playAnim)
             return;
 
-        float elapsedTime = m_timer.Elapsed();
-
-        if (m_timer.Elapsed() < m_time)
+        if (m_timer.Elapsed() == 0)
             return;
 
         //inc frames 
@@ -56,8 +56,6 @@ namespace deimos
             if (m_currentFrame >= m_animations[m_currentAnimation].size())
                 m_currentFrame = 0;
         }
-
-        m_timer.Reset();
     }
 
     void AnimatedSprite::SetCurrentAnimation(const Phobos::String_t& anim)
@@ -105,12 +103,16 @@ namespace deimos
         }
 
         m_mesh.SetVertexData(vertex);
+        m_mesh.CreateVertexBuffer(true);
+        m_mesh.GetBuffer().configVertex(VBOConfig(2, VBODataType::FLOAT, sizeof(Vertex), 0));
+        m_mesh.GetBuffer().configTexture(VBOConfig(2, VBODataType::FLOAT, sizeof(Vertex), 8));
         m_currentAnimation = m_animations.begin()->first;
     }
 
-    void AnimatedSprite::SetTime(float time)
+    void AnimatedSprite::SetDelay(float time)
     {
-        m_time = time;
+        m_delay = time;
+        m_timer.SetMinInterval(m_delay);
     }
 
     void AnimatedSprite::SetTexture(TexturePtr_t& texture)
