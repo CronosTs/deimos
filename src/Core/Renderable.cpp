@@ -30,7 +30,6 @@ namespace deimos
     fmat4 Renderable::GetTransformMatrix()
     {
         fmat4 matrix;
-
         float x = m_scale.x, //sale
               y = m_scale.y,
               s = sin(m_angle),
