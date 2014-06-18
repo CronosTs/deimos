@@ -39,6 +39,9 @@
     <ClCompile Include="..\..\..\src\Core\AnimatedSprite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\Core\Renderable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\Deimos\Sprite.hpp">
@@ -72,6 +75,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\Deimos\AnimatedSprite.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\Deimos\Renderable.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\Deimos\Matrix.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

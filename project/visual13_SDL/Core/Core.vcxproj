@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Core\AnimatedSprite.cpp" />
     <ClCompile Include="..\..\..\src\Core\Mesh.cpp" />
+    <ClCompile Include="..\..\..\src\Core\Renderable.cpp" />
     <ClCompile Include="..\..\..\src\Core\Renderer.cpp" />
     <ClCompile Include="..\..\..\src\Core\Sprite.cpp" />
     <ClCompile Include="..\..\..\src\Core\Texture.cpp" />
@@ -23,8 +24,10 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\include\Deimos\AnimatedSprite.hpp" />
     <ClInclude Include="..\..\..\include\Deimos\GraphicDefs.hpp" />
+    <ClInclude Include="..\..\..\include\Deimos\Matrix.hpp" />
     <ClInclude Include="..\..\..\include\Deimos\Mesh.hpp" />
     <ClInclude Include="..\..\..\include\Deimos\OpenglErrorChecker.hpp" />
+    <ClInclude Include="..\..\..\include\Deimos\Renderable.hpp" />
     <ClInclude Include="..\..\..\include\Deimos\Renderer.hpp" />
     <ClInclude Include="..\..\..\include\Deimos\Sprite.hpp" />
     <ClInclude Include="..\..\..\include\Deimos\Texture.hpp" />

@@ -7,6 +7,7 @@
 #include <Deimos/AnimatedSprite.hpp>
 
 #include <Phobos/System/Timer.h>
+#include <Phobos/Shell/Command.h>
 
 namespace sample_01
 {
@@ -23,6 +24,9 @@ namespace sample_01
             void OnUpdate();
             void OnRenderReady();
 
+            //change animation
+            void CmdChAnim(const Phobos::Shell::StringVector_t &args, Phobos::Shell::Context &);
+
             ~Render();
 
         protected:
@@ -33,6 +37,7 @@ namespace sample_01
 
             deimos::Sprite m_sprite;
             deimos::AnimatedSprite m_animSprite;
+            Phobos::Shell::Command m_left;
     };
 }
 

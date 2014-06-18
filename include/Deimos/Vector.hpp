@@ -12,6 +12,11 @@ namespace deimos
             y(T())
         {}
 
+        Vector2d(T _x, T _y) :
+            x(_x),
+            y(_y)
+        {}
+
         T x, y;
     };
 

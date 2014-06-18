@@ -1,4 +1,5 @@
 #include "Render.hpp"
+#include "Console.h"
 
 #include <Deimos/Window.hpp>
 #include <Deimos/OpenglErrorChecker.hpp>
@@ -12,6 +13,8 @@
 
 #include <GL/glew.h>
 
+#include <functional>
+
 #include <fstream>
 
 
@@ -21,8 +24,12 @@ namespace sample_01
     PH_DEFINE_DEFAULT_SINGLETON(Render);
 
     Render::Render():
-        Phobos::Engine::Module("Render")
-    {}
+        Phobos::Engine::Module("Render"),
+        m_left("left")
+    {
+        auto &console = Console::CreateInstance();
+        console.AddContextCommand(m_left);
+    }
 
     Render::~Render()
     {
@@ -95,5 +102,10 @@ namespace sample_01
         m_animSprite.Draw();
 
         wnd.display();
+    }
+
+    void Render::CmdChAnim(const Phobos::Shell::StringVector_t &args, Phobos::Shell::Context &context)
+    {
+        m_animSprite.SetCurrentAnimation(args[0]);
     }
 }
