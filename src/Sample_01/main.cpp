@@ -8,6 +8,8 @@
 #include <Phobos/Log.h>
 #include <Phobos/Engine/Session.h>
 
+#include <Deimos/Matrix.hpp>
+
 #include <exception>
 
 #include "Render.hpp"
@@ -17,7 +19,12 @@ void runDeimos();
 
 int main(int argc, char** argv)
 {
-    runDeimos();
+    //runDeimos();
+    deimos::fmat4 matrix1, matrix2;
+    matrix1.Traspose();
+    matrix1 * matrix2;
+    matrix1 + matrix2;
+    matrix1 * 10;
 
     return 0;
 }

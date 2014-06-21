@@ -6,11 +6,11 @@
 
 #include <Phobos/BaseAPI.h>
 
-#include <vector>
+#include <memory>
 
 namespace deimos
 {
-    
+    class Renderable;
 
     class PH_BASE_API  Renderable
     {
@@ -24,7 +24,7 @@ namespace deimos
             void SetPosition(const fvec2&);
             void SetScale(const fvec2&);
             void SetAngle(const float);
-            fmat4 GetTransformMatrix();
+            fmat4 GetTransformMatrix() const;
 
             fvec2 GetPosition()
             {

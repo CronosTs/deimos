@@ -16,7 +16,7 @@ namespace deimos
             const ubvec4& color     = vertex[i].color;
 
             //r, g, b, alpha
-            //::glColor4ub(color.x, color.y, color.z, 0); //it's broken
+            //::glColor4ub(color.x, color.y, color.z, color.w); //it's broken
             ::glTexCoord2f(texture.x, texture.y);
             ::glVertex2f(position.x, position.y);
         }

@@ -39,10 +39,10 @@ namespace deimos
         x(T()),
         y(T()),
         z(T()),
-        a(T())
+        w(T())
         {}
 
-        T x, y, z, a; // a ?
+        T x, y, z, w; // a ?
     };
 
     typedef Vector2d<float> fvec2;

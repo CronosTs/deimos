@@ -27,9 +27,13 @@ namespace deimos
         m_angle = angle;
     }
 
-    fmat4 Renderable::GetTransformMatrix()
+    fmat4 Renderable::GetTransformMatrix() const
     {
         fmat4 matrix;
+
+        for (int i = 0; i < 4; i++)
+            matrix[i][i] = 1;
+
         float x = m_scale.x, //sale
               y = m_scale.y,
               s = sin(m_angle),
@@ -43,8 +47,8 @@ namespace deimos
         x += m_position.x;
         y += m_position.y;
 
-        matrix.At(0, 0) = x;
-        matrix.At(1, 1) = y;
+        matrix[0][3] = x;
+        matrix[1][3] = y;
 
         return matrix;
     }
