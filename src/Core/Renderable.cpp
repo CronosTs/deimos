@@ -29,27 +29,8 @@ namespace deimos
 
     fmat4 Renderable::GetTransformMatrix() const
     {
-        fmat4 matrix;
-
-        for (int i = 0; i < 4; i++)
-            matrix[i][i] = 1;
-
-        float x = m_scale.x, //sale
-              y = m_scale.y,
-              s = sin(m_angle),
-              c = cos(m_angle);
-
-        //rotation
-        x = x*c - y*s;
-        y = x*s + y*c;
-
-        //translation
-        x += m_position.x;
-        y += m_position.y;
-
-        matrix[0][3] = x;
-        matrix[1][3] = y;
-
-        return matrix;
+        return TranslationMatrix(m_position.x, m_position.y, 0.f) * 
+               ZRotationMatrix(m_angle) * 
+               ScalingMatrix(m_scale.x, m_scale.y, 1.f);
     }
 }

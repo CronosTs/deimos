@@ -16,7 +16,7 @@ namespace deimos
             m_renderableObjects.begin(), 
             m_renderableObjects.end(),       
             [](const RenderableConstPtr_t& obj){
-                fmat4 matrix = obj->GetTransformMatrix(); //TODO: matrix constructor need do this job!
+                fmat4 matrix = obj->GetTransformMatrix();
                 obj->Draw();
             }
         );
