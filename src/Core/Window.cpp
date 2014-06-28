@@ -2,46 +2,40 @@
 
 #include <Phobos/Log.h>
 #include <Phobos/Exception.h>
+#include <Phobos/Memory.h>
 
 #include <SDL.h>
 #include <memory>
 #include <GL/glew.h>
 #include <OpenglErrorChecker.hpp>
 
-namespace deimos
+namespace Deimos
 {
-    std::shared_ptr<Window> Window::ptr;
 
-    Window& Window::createInstance()
+    static bool exist = false;
+
+    Window::WindowPtr_t Window::Create(const Phobos::String_t& name)
     {
-        if (ptr == nullptr)
-            ptr.reset(new Window());
-
-        return *ptr;
+        return WindowPtr_t(PH_NEW Window(name));
     }
 
-    void Window::releaseInstance()
+    Window::Window(const Phobos::String_t& name):
+        WindowSDL(name)
+    {}
+
+    Window::~Window()
     {
-        ptr.reset();
+        exist = false;
     }
-    
-    void Window::open(const Phobos::String_t& title, int width, int height)
+
+    void Window::Open(const Phobos::String_t &name, const Phobos::UIntSize_t &size, unsigned int flags, void *parentWindow)
     {
-        SDL_Init(SDL_INIT_VIDEO);
+        if (exist)
+            PH_RAISE(Phobos::INVALID_OPERATION_EXCEPTION, "Core::Window", "Can't open window twice");
 
-        unsigned int flags = SDL_OPENGL; //| SDL_NOFRAME;
-
-        SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
-        SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
-        SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
-        SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
-        //SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-        
-        SDL_SetVideoMode(width, height, 32, flags);
-
-        SDL_WM_SetCaption(title.c_str(), nullptr);
-
+        WindowSDL::Open(name, size, flags, parentWindow);
         configOpenGLContext();
+        exist = true;
     }
 
     void Window::configOpenGLContext()
@@ -54,43 +48,15 @@ namespace deimos
                     "Render",
                     "GLEW initialization failed...");
 
-        DEIMOS_GL_CHECK(::glOrtho(0, getWidth(), getHeight(), 0, 0, 500));
-        DEIMOS_GL_CHECK(::glViewport(0, 0, getWidth(), getHeight()));
+        DEIMOS_GL_CHECK(::glOrtho(0, GetWidth(), GetHeight(), 0, 0, 500));
+        DEIMOS_GL_CHECK(::glViewport(0, 0, GetWidth(), GetHeight()));
         DEIMOS_GL_CHECK(::glClearColor(0, 0, 0, 1));
         DEIMOS_GL_CHECK(::glEnable(GL_DEPTH_TEST));
         DEIMOS_GL_CHECK(::glClearDepth(1.f));
     }
 
-    int Window::getWidth()
-    {
-        return SDL_GetVideoSurface()->w;
-    }
-
-    int Window::getHeight()
-    {
-        return SDL_GetVideoSurface()->h;
-    }
-
-    void Window::setClearColor(int r, int g, int b, int a)
-    {
-        DEIMOS_GL_CHECK(::glClearColor(r / 255.f, g / 255.f, b / 255.f, a / 255.f));
-    }
-
-    void Window::clear()
-    {
-        DEIMOS_GL_CHECK(::glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-    }
-
-    void Window::display()
+    void Window::Display()
     {
         SDL_GL_SwapBuffers();
     }
-
-    Window::~Window()
-    {
-        SDL_Quit();
-    }
-
-    Window::Window()
-    {}
 }

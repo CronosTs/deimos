@@ -1,13 +1,14 @@
 #ifndef DEIMOS_RENDER_H_INCLUDED
 #define DEIMOS_RENDER_H_INCLUDED
 
-#include <Phobos/Engine/Module.h>
-#include <Phobos/Singleton.h>
 #include <Deimos/Sprite.hpp>
 #include <Deimos/AnimatedSprite.hpp>
+#include <Deimos/Window.hpp>
 
 #include <Phobos/System/Timer.h>
 #include <Phobos/Shell/Command.h>
+#include <Phobos/Engine/Module.h>
+#include <Phobos/Singleton.h>
 
 namespace sample_01
 {
@@ -35,8 +36,9 @@ namespace sample_01
 
         private:
 
-            deimos::Sprite m_sprite;
-            deimos::AnimatedSprite m_animSprite;
+            Deimos::Sprite m_sprite;
+            Deimos::AnimatedSprite m_animSprite;
+            Deimos::Window::WindowPtr_t m_window;
             Phobos::Shell::Command m_left;
     };
 }

@@ -1,7 +1,7 @@
 #ifndef DEIMOS_GRAPHIC_DEFS_H_INCLUDED
 #define DEIMOS_GRAPHIC_DEFS_H_INCLUDED
 
-namespace deimos
+namespace Deimos
 {
     enum Primitives
     {

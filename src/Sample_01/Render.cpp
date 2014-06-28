@@ -3,6 +3,7 @@
 
 #include <Deimos/Window.hpp>
 #include <Deimos/OpenglErrorChecker.hpp>
+#include <Deimos/Renderer.hpp>
 
 #include <Phobos/Log.h>
 #include <Phobos/Engine/Core.h>
@@ -32,17 +33,16 @@ namespace sample_01
     }
 
     Render::~Render()
-    {
-        deimos::Window::releaseInstance();
-    }
+    {}
 
     void Render::OnInit()
     {
         Phobos::LogMessage("[Render::OnInit] Starting");
         Phobos::LogMessage("[Render::OnInit] Creating window");
 
-        deimos::Window::createInstance().open("MyWindow", 800, 600);
-        deimos::Window::createInstance().clear();
+        m_window = Deimos::Window::Create("MyWindow");
+        m_window->Open("Sample01", Phobos::UIntSize_t(800, 600), Phobos::System::Window::WND_OPENGL_CONTEXT);
+        Deimos::Renderer::SetClearColor(255, 255, 255, 0);
         
         Phobos::LogMessage("[Render::OnInit] Ready.");
     }
@@ -52,25 +52,24 @@ namespace sample_01
         Phobos::LogMessage("[Render::OnStart] Initing...");
         Phobos::LogMessage("[Render::OnStart] Load Resources...");
 
-        m_sprite.setTexture("player_male_base.png");
-        m_sprite.setRect(deimos::Sprite::FRect(21, 6, 20, 54));
-        m_animSprite.SetTexture(m_sprite.getTexture());
+        m_sprite.SetTexture("player_male_base.png");
+        m_sprite.SetRect(Deimos::Sprite::FRect(21, 6, 20, 54));
+        m_animSprite.SetTexture(m_sprite.GetTexture());
 
         //load animations
         Phobos::LogMessage("[Render::OnStart] Loading assets.");
         m_animSprite.LoadAnimation("player.conf");
         m_animSprite.SetCurrentAnimation("WalkDown");
-        m_animSprite.SetDelay(0.075);
+        m_animSprite.SetDelay(0.075f);
 
         Phobos::LogMessage("[Render::OnStart] Done.");
 
-        glMatrixMode(GL_MODELVIEW);
+        glMatrixMode(GL_MODELVIEW);//TODO: remove this
     }
 
     void Render::OnUpdate()
     {
-        auto& wnd = deimos::Window::createInstance();
-        wnd.clear();
+        Deimos::Renderer::ClearWindow();
 
         /*texture.bind();
         glBegin(GL_TRIANGLES);
@@ -101,7 +100,7 @@ namespace sample_01
         m_animSprite.Update();
         m_animSprite.Draw();
 
-        wnd.display();
+        m_window->Display();
     }
 
     void Render::CmdChAnim(const Phobos::Shell::StringVector_t &args, Phobos::Shell::Context &context)

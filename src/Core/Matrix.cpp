@@ -1,6 +1,6 @@
 #include "Matrix.hpp"
 
-namespace deimos
+namespace Deimos
 {
     fmat4 ScalingMatrix(float x, float y, float z)
     {

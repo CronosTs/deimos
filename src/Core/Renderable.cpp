@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-namespace deimos
+namespace Deimos
 {
     Renderable::Renderable():
         m_scale(1, 1),

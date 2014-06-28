@@ -7,7 +7,7 @@
 #include <vector>
 #include <iterator>
 
-namespace deimos
+namespace Deimos
 {
     enum VBODataType
     {
@@ -70,15 +70,15 @@ namespace deimos
 
             ~VBO();
 
-            void create();
-            void destroy(); //destroy the bufferr
-            void bind() const;
-            void unbind() const;
-            void upload(const VBOData& data, int vboTarget);
-            void draw(int drawMode, int start = 0, int count = 0) const;
-            void configVertex(const VBOConfig& cfg) const;
-            void configTexture(const VBOConfig& cfg) const;
-            void configColor(const VBOConfig& cfg) const;
+            void Create();
+            void Destroy(); //destroy the bufferr
+            void Bind() const;
+            void Unbind() const;
+            void Upload(const VBOData& data, int vboTarget);
+            void Draw(int drawMode, int start = 0, int count = 0) const;
+            void ConfigVertex(const VBOConfig& cfg) const;
+            void ConfigTexture(const VBOConfig& cfg) const;
+            void ConfigColor(const VBOConfig& cfg) const;
 
             bool HasCreated() const
             {
@@ -86,7 +86,7 @@ namespace deimos
             }
 
             template <class T>
-            void upload(const std::vector<T>& vboData, int vboTarget)
+            void Upload(const std::vector<T>& vboData, int vboTarget)
             {
                 m_size = vboData.size();
 
@@ -104,7 +104,7 @@ namespace deimos
                           end,    //last adress. TODO: verify if this is the correct adress
                           std::back_inserter(data));
 
-                upload(data, vboTarget);
+                Upload(data, vboTarget);
             }
 
         protected:

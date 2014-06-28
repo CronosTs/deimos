@@ -6,7 +6,7 @@
 #include "VBO.hpp"
 #include <vector>
 
-namespace deimos
+namespace Deimos
 {
     class Mesh
     {

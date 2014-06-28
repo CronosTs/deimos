@@ -8,7 +8,7 @@
 #include <array>
 #include <cmath>
 
-namespace deimos
+namespace Deimos
 {
     //TODO: implement common matrix operations
     template<class T, int Line, int Column>

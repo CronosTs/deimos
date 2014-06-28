@@ -4,7 +4,7 @@
 
 #include "Vector.hpp"
 
-namespace deimos
+namespace Deimos
 {
     //TODO: fixe msvc align problem !!!
     struct Vertex

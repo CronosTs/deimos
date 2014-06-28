@@ -2,7 +2,7 @@
 #include "GraphicDefs.hpp"
 #include "OpenglErrorChecker.hpp"
 
-namespace deimos
+namespace Deimos
 {
 
     struct GLTargetToVBOTarget
@@ -65,22 +65,22 @@ namespace deimos
         const VBOConfig& textureConfig,
         bool freeClientData)
     {
-        create();
-        upload(data, vboTarget);
-        configVertex(vertexConfig);
-        configColor(colorConfig);
-        configTexture(textureConfig);
+        Create();
+        Upload(data, vboTarget);
+        ConfigVertex(vertexConfig);
+        ConfigColor(colorConfig);
+        ConfigTexture(textureConfig);
     }
 
     VBO::~VBO()
     {
-        destroy();
+        Destroy();
     }
 
-    void VBO::create()
+    void VBO::Create()
     {
         if (m_created)
-            destroy();
+            Destroy();
 
         DEIMOS_GL_CHECK(::glGenBuffers(1, &m_id));
         m_created = true;
@@ -88,7 +88,7 @@ namespace deimos
         DEIMOS_GL_CHECK(glEnableClientState(GL_TEXTURE_COORD_ARRAY));
     }
 
-    void VBO::destroy()
+    void VBO::Destroy()
     {
         if (!m_created)
             return;
@@ -98,19 +98,19 @@ namespace deimos
         m_size = 0;
     }
 
-    void VBO::bind() const
+    void VBO::Bind() const
     {
         if (m_created)
             DEIMOS_GL_CHECK(::glBindBuffer(GL_ARRAY_BUFFER, m_id));
     }
 
-    void VBO::unbind() const
+    void VBO::Unbind() const
     {
         //that is the proof that id is always > 0
         DEIMOS_GL_CHECK(::glBindBuffer(GL_ARRAY_BUFFER, 0));
     }
 
-    void VBO::upload(const VBOData& data, int vboTarget)
+    void VBO::Upload(const VBOData& data, int vboTarget)
     {
         //TODO: throw exception
         if (!m_created || data.empty())
@@ -119,13 +119,13 @@ namespace deimos
         if (m_size <= 0)
             m_size = data.size();
         
-        bind();
+        Bind();
         DEIMOS_GL_CHECK(::glBufferData(GL_ARRAY_BUFFER, data.size(),
             static_cast<const void*>(&data[0]),
             glToVBOTarget[vboTarget].glTarget));
     }
 
-    void VBO::draw(int drawMode, int start, int count) const
+    void VBO::Draw(int drawMode, int start, int count) const
     {
         if (!m_created)
             return;
@@ -138,40 +138,40 @@ namespace deimos
 
         //TODO: assertion HERE!!!: drawMode < LINES and drawMode > TRIANGLE_FAN
 
-        bind();
+        Bind();
         DEIMOS_GL_CHECK(::glDrawArrays(glToVBOMode[drawMode].glMode, start, count));
     }
 
-    void VBO::configVertex(const VBOConfig& cfg) const
+    void VBO::ConfigVertex(const VBOConfig& cfg) const
     {
         if (!m_created)
             return;
 
-        bind();
+        Bind();
         DEIMOS_GL_CHECK(::glVertexPointer(cfg.size,
             glDataTypeToVBO[cfg.type].glType,
             cfg.stride,
             reinterpret_cast<void *>(cfg.pointer)));
     }
 
-    void VBO::configTexture(const VBOConfig& cfg) const
+    void VBO::ConfigTexture(const VBOConfig& cfg) const
     {
         if (!m_created)
             return;
 
-        bind();
+        Bind();
         DEIMOS_GL_CHECK(::glTexCoordPointer(cfg.size,
             glDataTypeToVBO[cfg.type].glType,
             cfg.stride,
             reinterpret_cast<void *>(cfg.pointer)));
     }
 
-    void VBO::configColor(const VBOConfig& cfg) const
+    void VBO::ConfigColor(const VBOConfig& cfg) const
     {
         if (!m_created)
             return;
 
-        bind();
+        Bind();
         DEIMOS_GL_CHECK(::glColorPointer(cfg.size,
             glDataTypeToVBO[cfg.type].glType,
             cfg.stride,

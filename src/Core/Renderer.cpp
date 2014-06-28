@@ -4,7 +4,7 @@
 
 #include <GL/glew.h>
 
-namespace deimos
+namespace Deimos
 {
     void Renderer::Draw(const std::vector<Vertex>& vertex, int primitive, int offset, int size)
     {
@@ -25,7 +25,22 @@ namespace deimos
     
     void Renderer::Draw(const VBO& vbo, int primitive, int offset, int size)
     {
-        vbo.bind();
-        vbo.draw(primitive, offset, size);
+        vbo.Bind();
+        vbo.Draw(primitive, offset, size);
+    }
+
+    void Renderer::ClearWindow()
+    {
+        DEIMOS_GL_CHECK(::glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+    }
+
+    void Renderer::SetClearColor(Phobos::UInt8_t red, Phobos::UInt8_t green, Phobos::UInt8_t blue, Phobos::UInt8_t alpha)
+    {
+        float r = static_cast<float>(red),
+              g = static_cast<float>(green),
+              b = static_cast<float>(blue),
+              a = static_cast<float>(alpha);
+
+        DEIMOS_GL_CHECK(::glClearColor(r / 255.f, g / 255.f, b / 255.f, a / 255.f));
     }
 }

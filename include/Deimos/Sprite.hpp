@@ -11,7 +11,7 @@
 #include "Mesh.hpp"
 #include "Vertex.hpp"
 
-namespace deimos
+namespace Deimos
 {
     class PH_BASE_API Sprite
     {
@@ -39,12 +39,12 @@ namespace deimos
             Sprite();
             ~Sprite();
 
-            inline void setVisible(bool);
-            void draw();
-            void setRect(const FRect&);
-            void setTexture(TexturePtr_t&, const FRect& = FRect());
-            void setTexture(const Phobos::String_t&, const FRect& = FRect());
-            TexturePtr_t getTexture();
+            inline void SetVisible(bool);
+            void Draw();
+            void SetRect(const FRect&);
+            void SetTexture(TexturePtr_t&, const FRect& = FRect());
+            void SetTexture(const Phobos::String_t&, const FRect& = FRect());
+            TexturePtr_t GetTexture();
             
 
         private:

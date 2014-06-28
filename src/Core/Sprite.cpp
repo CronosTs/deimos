@@ -2,7 +2,7 @@
 
 #include "GraphicDefs.hpp"
 
-namespace deimos
+namespace Deimos
 {
     Sprite::Sprite():
         m_visible(true)
@@ -15,25 +15,24 @@ namespace deimos
          //empty
     }
 
-    void Sprite::setVisible(bool visible)
+    void Sprite::SetVisible(bool visible)
     {
         m_visible = visible;
     }
 
-    void Sprite::draw()
+    void Sprite::Draw()
     {
         if (!m_visible)
             return;
 
-        m_texture->bind();
+        m_texture->Bind();
         m_mesh.Draw(Primitives::TRIANGLES); //draw everything
     }
 
-    void Sprite::setRect(const FRect& rect)
+    void Sprite::SetRect(const FRect& rect)
     {
-
-        float width  = m_texture->getWidth(),
-              height = m_texture->getHeight();
+        float width  = m_texture->GetWidth(),
+              height = m_texture->GetHeight();
 
         if (rect != FRect(0, 0, 0, 0))
             m_rect = rect;
@@ -73,25 +72,25 @@ namespace deimos
 
         m_mesh.SetVertexData(data);
         m_mesh.CreateVertexBuffer(true); //don't work
-        m_mesh.GetBuffer().configVertex(VBOConfig(2, VBODataType::FLOAT, sizeof(Vertex), 0));
-        m_mesh.GetBuffer().configTexture(VBOConfig(2, VBODataType::FLOAT, sizeof(Vertex), 8));
+        m_mesh.GetBuffer().ConfigVertex(VBOConfig(2, VBODataType::FLOAT, sizeof(Vertex), 0));
+        m_mesh.GetBuffer().ConfigTexture(VBOConfig(2, VBODataType::FLOAT, sizeof(Vertex), 8));
     }
 
-    void Sprite::setTexture(TexturePtr_t& texture, const FRect& rect)
+    void Sprite::SetTexture(TexturePtr_t& texture, const FRect& rect)
     {
         using namespace Phobos;
 
         m_texture = texture;
 
-        setRect(rect);
+        SetRect(rect);
     }  
 
-    void Sprite::setTexture(const Phobos::String_t& texture, const FRect& rect)
+    void Sprite::SetTexture(const Phobos::String_t& texture, const FRect& rect)
     {
-        setTexture(std::make_shared<Texture>(texture), rect);
+        SetTexture(std::make_shared<Texture>(texture), rect);
     }
 
-    Sprite::TexturePtr_t Sprite::getTexture()
+    Sprite::TexturePtr_t Sprite::GetTexture()
     {
         return m_texture;
     }

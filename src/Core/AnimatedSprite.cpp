@@ -11,7 +11,7 @@
 #include <iostream>
 #include <sstream>
 
-namespace deimos
+namespace Deimos
 {
     AnimatedSprite::AnimatedSprite() :
         m_visible(true),
@@ -104,8 +104,8 @@ namespace deimos
 
         m_mesh.SetVertexData(vertex);
         m_mesh.CreateVertexBuffer(true);
-        m_mesh.GetBuffer().configVertex(VBOConfig(2, VBODataType::FLOAT, sizeof(Vertex), 0));
-        m_mesh.GetBuffer().configTexture(VBOConfig(2, VBODataType::FLOAT, sizeof(Vertex), 8));
+        m_mesh.GetBuffer().ConfigVertex(VBOConfig(2, VBODataType::FLOAT, sizeof(Vertex), 0));
+        m_mesh.GetBuffer().ConfigTexture(VBOConfig(2, VBODataType::FLOAT, sizeof(Vertex), 8));
         m_currentAnimation = m_animations.begin()->first;
     }
 
@@ -158,7 +158,7 @@ namespace deimos
         auto &nodes = allEntity.GetNodes();
 
         Animations animations;
-        int framesPerWidth = m_texture->getWidth() / frameWidth;
+        int framesPerWidth = m_texture->GetWidth() / frameWidth;
         for (auto i = nodes.begin(); i != nodes.end(); ++i)
         {
             auto *table = static_cast<Phobos::Register::Table*>(i->second);
@@ -217,8 +217,8 @@ namespace deimos
         */
 
         Vertex t1, t2, t3, t4;
-        float width  = m_texture->getWidth(), 
-              height = m_texture->getHeight();
+        float width  = m_texture->GetWidth(), 
+              height = m_texture->GetHeight();
 
         t1.position.x = 0;
         t1.position.y = 0;

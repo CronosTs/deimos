@@ -4,33 +4,31 @@
 #include <Phobos/String.h>
 #include <Phobos/Types.h>
 #include <Phobos/BaseAPI.h>
+#include <Phobos/System/SDL/WindowSDL.h>
 #include <memory>
 
-namespace deimos
-{   
-    class PH_BASE_API Window
+namespace Deimos
+{
+    class PH_BASE_API Window: public Phobos::System::WindowSDL
     {
         public:
 
-            ~Window();
+            typedef std::shared_ptr<Window> WindowPtr_t;
+            typedef std::weak_ptr<Window> WindowWeakPtr_t;
 
-            void open(const Phobos::String_t& title, int width, int height);
-            int getWidth();
-            int getHeight();
-            void setClearColor(int r, int g, int b, int a);
-            void clear();
-            void display();
+            static WindowPtr_t Create(const Phobos::String_t& name);
 
-            static Window& createInstance();
-            static void releaseInstance();
+            virtual void Open(const Phobos::String_t &name, const Phobos::UIntSize_t &size, unsigned int flags, void *parentWindow = NULL) override;
+
+            //swap opengl buffers
+            void Display();
+
+            virtual ~Window();
 
         private:
-
-            void configOpenGLContext();
-
-            Window();
-            static std::shared_ptr<Window> ptr;
-            
+       
+            Window(const Phobos::String_t&);
+            void Window::configOpenGLContext();
     };
 }
 

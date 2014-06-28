@@ -3,7 +3,7 @@
 
 #include <Phobos/String.h>
 
-namespace deimos
+namespace Deimos
 {
     class PH_BASE_API Texture
     {
@@ -14,11 +14,11 @@ namespace deimos
 
             Texture(const Phobos::String_t& file);
 
-            void loadFromFile(const Phobos::String_t& file);
-            void bind();
-            void destroy();
-            unsigned int getWidth();
-            unsigned int getHeight();
+            void LoadFromFile(const Phobos::String_t& file);
+            void Bind();
+            void Destroy();
+            unsigned int GetWidth();
+            unsigned int GetHeight();
 
         private:
 

@@ -14,7 +14,7 @@
 #include <vector>
 #include <memory>
 
-namespace deimos
+namespace Deimos
 {
     class PH_BASE_API AnimatedSprite
     {

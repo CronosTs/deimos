@@ -7,7 +7,7 @@
 #include <Phobos/Log.h>
 #include <OpenglErrorChecker.hpp>
 
-namespace deimos
+namespace Deimos
 {
     Texture::Texture():
         m_created(false),
@@ -18,18 +18,18 @@ namespace deimos
 
     Texture::Texture(const Phobos::String_t& file)
     {
-        loadFromFile(file);
+        LoadFromFile(file);
     }
 
     Texture::~Texture()
     {
-        destroy();
+        Destroy();
     }
 
-    void Texture::loadFromFile(const Phobos::String_t& file)
+    void Texture::LoadFromFile(const Phobos::String_t& file)
     {
         if (m_created)
-            destroy();
+            Destroy();
         
         SDL_Surface* image = IMG_Load(file.c_str());
         if (image == nullptr)
@@ -76,7 +76,7 @@ namespace deimos
         DEIMOS_GL_CHECK(::glEnable(GL_TEXTURE_2D));
     }
 
-    void Texture::bind()
+    void Texture::Bind()
     {
         if (!m_created)
             return;
@@ -84,7 +84,7 @@ namespace deimos
         DEIMOS_GL_CHECK(::glBindTexture(GL_TEXTURE_2D, m_id));
     }
 
-    void Texture::destroy()
+    void Texture::Destroy()
     {
         if (!m_created)
             return;
@@ -94,12 +94,12 @@ namespace deimos
         m_id = 0;
     }
 
-    unsigned int Texture::getWidth()
+    unsigned int Texture::GetWidth()
     {
         return m_width;
     }
 
-    unsigned int Texture::getHeight()
+    unsigned int Texture::GetHeight()
     {
         return m_height;
     }

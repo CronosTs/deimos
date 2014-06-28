@@ -7,7 +7,7 @@
 #include <list>
 #include <memory>
 
-namespace deimos
+namespace Deimos
 {
     class Scene
     {

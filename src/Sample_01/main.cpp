@@ -20,7 +20,7 @@ void runDeimos();
 int main(int argc, char** argv)
 {
     //runDeimos();
-    deimos::fmat4 matrix1, matrix2;
+    Deimos::fmat4 matrix1, matrix2;
     matrix1.Traspose();
     matrix1 * matrix2;
     matrix1 + matrix2;

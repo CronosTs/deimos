@@ -8,7 +8,7 @@
 
 #include <memory>
 
-namespace deimos
+namespace Deimos
 {
     class Renderable;
 

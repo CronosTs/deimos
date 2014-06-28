@@ -2,7 +2,7 @@
 #ifndef DEIMOS_VECTOR_H_INCLUDED
 #define DEIMOS_VECTOR_H_INCLUDED
 
-namespace deimos
+namespace Deimos
 {
     template<class T>
     struct Vector2d

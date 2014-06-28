@@ -3,7 +3,7 @@
 #include "Renderer.hpp"
 #include "GraphicDefs.hpp"
 
-namespace  deimos
+namespace  Deimos
 {
     Mesh::Mesh() :
         m_size(0)
@@ -36,8 +36,8 @@ namespace  deimos
         if (m_vertex.empty()) //throw exception
             return;
 
-        m_vbo.create(); //maybe this is redundant
-        m_vbo.upload(m_vertex, VBOTarget::STATIC);
+        m_vbo.Create(); //maybe this is redundant
+        m_vbo.Upload(m_vertex, VBOTarget::STATIC);
 
         if (freeLocalContent)
             m_vertex.resize(0);
