@@ -100,7 +100,7 @@ namespace sample_01
         m_animSprite.Update();
         m_animSprite.Draw();
 
-        m_window->Display();
+        m_window->SwapBuffers();
     }
 
     void Render::CmdChAnim(const Phobos::Shell::StringVector_t &args, Phobos::Shell::Context &context)

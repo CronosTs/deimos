@@ -20,10 +20,7 @@ namespace Deimos
 
             virtual void Open(const Phobos::String_t &name, const Phobos::UIntSize_t &size, unsigned int flags, void *parentWindow = NULL) override;
 
-            //swap opengl buffers
-            void Display();
-
-            virtual ~Window();
+            ~Window();
 
         private:
        

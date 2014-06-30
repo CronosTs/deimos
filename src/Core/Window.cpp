@@ -54,9 +54,4 @@ namespace Deimos
         DEIMOS_GL_CHECK(::glEnable(GL_DEPTH_TEST));
         DEIMOS_GL_CHECK(::glClearDepth(1.f));
     }
-
-    void Window::Display()
-    {
-        SDL_GL_SwapBuffers();
-    }
 }
