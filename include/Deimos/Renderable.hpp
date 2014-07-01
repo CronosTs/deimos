@@ -2,7 +2,6 @@
 #define DEIMOS_RENDERABLE_H_INCLUDED
 
 #include "Vector.hpp"
-#include "Matrix.hpp"
 
 #include <Phobos/BaseAPI.h>
 
@@ -24,19 +23,18 @@ namespace Deimos
             void SetPosition(const fvec2&);
             void SetScale(const fvec2&);
             void SetAngle(const float);
-            fmat4 GetTransformMatrix() const;
 
-            fvec2 GetPosition()
+            fvec2 GetPosition() const
             {
                 return m_position;
             }
             
-            fvec2 GetScale()
+            fvec2 GetScale() const
             {
                 return m_scale;
             }
             
-            float GetAngle()
+            float GetAngle() const
             {
                 return m_angle;
             }

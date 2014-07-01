@@ -17,6 +17,7 @@
     <ClCompile Include="..\..\..\src\Core\Renderable.cpp" />
     <ClCompile Include="..\..\..\src\Core\Renderer.cpp" />
     <ClCompile Include="..\..\..\src\Core\Scene.cpp" />
+    <ClCompile Include="..\..\..\src\Core\SceneManager.cpp" />
     <ClCompile Include="..\..\..\src\Core\Sprite.cpp" />
     <ClCompile Include="..\..\..\src\Core\Texture.cpp" />
     <ClCompile Include="..\..\..\src\Core\VBO.cpp" />
@@ -32,6 +33,7 @@
     <ClInclude Include="..\..\..\include\Deimos\Renderable.hpp" />
     <ClInclude Include="..\..\..\include\Deimos\Renderer.hpp" />
     <ClInclude Include="..\..\..\include\Deimos\Scene.hpp" />
+    <ClInclude Include="..\..\..\include\Deimos\SceneManager.hpp" />
     <ClInclude Include="..\..\..\include\Deimos\Sprite.hpp" />
     <ClInclude Include="..\..\..\include\Deimos\Texture.hpp" />
     <ClInclude Include="..\..\..\include\Deimos\VBO.hpp" />

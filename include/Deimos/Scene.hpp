@@ -23,9 +23,17 @@ namespace Deimos
             void AddRenderableObject(RenderablePtr_t&);
             void RemoveRenderableObject(RenderablePtr_t&);
 
+            void SetActive(bool=true);
+
+            bool IsActive() const
+            {
+                return m_active;
+            }
+
         private:
 
             std::list<RenderableConstPtr_t> m_renderableObjects;
+            bool m_active;
     };
 }
 

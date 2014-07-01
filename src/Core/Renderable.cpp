@@ -26,11 +26,4 @@ namespace Deimos
     {
         m_angle = angle;
     }
-
-    fmat4 Renderable::GetTransformMatrix() const
-    {
-        return TranslationMatrix(m_position.x, m_position.y, 0.f) * 
-               ZRotationMatrix(m_angle) * 
-               ScalingMatrix(m_scale.x, m_scale.y, 1.f);
-    }
 }
