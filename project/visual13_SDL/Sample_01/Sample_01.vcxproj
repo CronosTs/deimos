@@ -13,10 +13,12 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Sample_01\Console.cpp" />
     <ClCompile Include="..\..\..\src\Sample_01\main.cpp" />
+    <ClCompile Include="..\..\..\src\Sample_01\Player.cpp" />
     <ClCompile Include="..\..\..\src\Sample_01\Render.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\Sample_01\Console.h" />
+    <ClInclude Include="..\..\..\src\Sample_01\Player.hpp" />
     <ClInclude Include="..\..\..\src\Sample_01\Render.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

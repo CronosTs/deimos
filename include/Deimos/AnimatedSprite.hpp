@@ -29,7 +29,7 @@ namespace Deimos
             AnimatedSprite();
             ~AnimatedSprite();
 
-            void Draw();
+            void Draw() const;
             void Update();
             void SetCurrentAnimation(const Phobos::String_t&);
             void SetCurrentFrame(int); //unsigned ?

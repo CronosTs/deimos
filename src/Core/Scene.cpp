@@ -1,5 +1,7 @@
 #include "Scene.hpp"
+
 #include "Matrix.hpp"
+#include "Renderer.hpp"
 
 #include <algorithm>
 
@@ -30,9 +32,12 @@ namespace Deimos
                              * ZRotationMatrix(obj->GetAngle())
                              * ScalingMatrix(obj->GetScale().x, obj->GetScale().y, 1.f);
 
-                //glMultMatrixf(&matrix[0][0]);
+                //Renderer::SaveCurrentTransform();
+                //Renderer::AplyTransform(matrix);
 
                 obj->Draw();
+
+                //Renderer::RestorePreviousTransform();
             }
         );
     }

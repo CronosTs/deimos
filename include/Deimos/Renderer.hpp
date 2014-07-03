@@ -6,6 +6,7 @@
 
 #include "Vertex.hpp"
 #include "VBO.hpp"
+#include "Matrix.hpp"
 
 namespace Deimos
 {
@@ -20,6 +21,10 @@ namespace Deimos
             
             static void ClearWindow();
             static void SetClearColor(Phobos::UInt8_t red, Phobos::UInt8_t green, Phobos::UInt8_t blue, Phobos::UInt8_t alpha);
+            static void SaveCurrentTransform();
+            static void RestorePreviousTransform();
+            static void SetTransform(fmat4&);
+            static void AplyTransform(fmat4&);
     };
 }
 

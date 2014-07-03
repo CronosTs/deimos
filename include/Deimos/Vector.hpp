@@ -17,6 +17,28 @@ namespace Deimos
             y(_y)
         {}
 
+        void operator += (const Vector2d& other)
+        {
+            x += other.x;
+            y += other.y;
+        }
+
+        void operator -= (const Vector2d& other)
+        {
+            x -= other.x;
+            y -= other.y;
+        }
+
+        Vector2d operator + (const Vector2d& other)
+        {
+            return Vector2d(x + other.x, y + other.y);
+        }
+
+        Vector2d operator - (const Vector2d& other)
+        {
+            return Vector2d(x - other.x, y - other.y);
+        }
+
         T x, y;
     };
 

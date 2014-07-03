@@ -43,4 +43,24 @@ namespace Deimos
 
         DEIMOS_GL_CHECK(::glClearColor(r / 255.f, g / 255.f, b / 255.f, a / 255.f));
     }
+
+    void Renderer::SaveCurrentTransform()
+    {
+        DEIMOS_GL_CHECK(::glPushMatrix());
+    }
+
+    void Renderer::RestorePreviousTransform()
+    {
+        DEIMOS_GL_CHECK(::glPopMatrix());
+    }
+
+    void Renderer::SetTransform(fmat4& matrix)
+    {
+        DEIMOS_GL_CHECK(::glLoadMatrixf(&matrix[0][0]));
+    }
+
+    void Renderer::AplyTransform(fmat4& matrix)
+    {
+        DEIMOS_GL_CHECK(::glMultMatrixf(&matrix[0][0]));
+    }
 }

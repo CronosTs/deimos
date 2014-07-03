@@ -16,13 +16,15 @@ namespace Deimos
         public:
 
             Renderable();
-            ~Renderable();
+            virtual ~Renderable();
 
             virtual void Draw() const = 0;
 
             void SetPosition(const fvec2&);
             void SetScale(const fvec2&);
+            void Move(const fvec2&);
             void SetAngle(const float);
+            
 
             fvec2 GetPosition() const
             {

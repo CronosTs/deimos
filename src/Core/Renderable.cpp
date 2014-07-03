@@ -22,6 +22,11 @@ namespace Deimos
         m_scale = scale;
     }
 
+    void Renderable::Move(const fvec2& movement)
+    {
+        m_position += movement;
+    }
+
     void Renderable::SetAngle(float angle)
     {
         m_angle = angle;

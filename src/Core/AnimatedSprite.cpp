@@ -26,7 +26,7 @@ namespace Deimos
     AnimatedSprite::~AnimatedSprite()
     {}
 
-    void AnimatedSprite::Draw()
+    void AnimatedSprite::Draw() const
     {
         if (!m_visible)
             return;
