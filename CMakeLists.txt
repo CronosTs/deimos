@@ -21,6 +21,8 @@ include_directories(${PHOBOS_INCLUDE_DIR})
 link_directories(${PHOBOS_LIB_DIR})
 
 add_library(deimos SHARED ${DEIMOS_SOURCES} ${DEIMOS_INCLUDES})
+if(CMAKE_BUILD_TYPE MATCHES Release)
+    target_link_libraries(deimos debug PH_Base_d PH_System_d PH_Register_d)
+endif()
 
-target_link_libraries(deimos PH_Base PH_System PH_Register)
 
