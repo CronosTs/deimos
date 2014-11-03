@@ -7,6 +7,7 @@ local/
 bin/
 lib/
 work/
+build/
 project/visual13_SDL/Core/Debug
 project/visual13_SDL/Core/Release
 project/visual13_SDL/Sample_01/Debug
