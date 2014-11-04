@@ -31,7 +31,7 @@ namespace Deimos
         if (!m_visible)
             return;
 
-        auto meshIndex = m_animations[m_currentAnimation][m_currentFrame];
+        auto meshIndex = m_animations.at(m_currentAnimation)[m_currentFrame];
         m_mesh.Draw(Primitives::TRIANGLES, meshIndex*6, 6);
     }
 
