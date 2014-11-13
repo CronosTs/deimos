@@ -3,15 +3,18 @@ cmake_minimum_required( VERSION 3.0 )
 #Name your project here
 project( Deimos CXX )
 
-set( DEIMOS_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include/Deimos )
-set( DEIMOS_SOURCE_DIR ${CMAKE_SOURCE_DIR}/src/Core )
-set( DEIMOS_RUNTIME_OUTPUT_DIR ${CMAKE_SOURCE_DIR}/bin )
-set( DEIMOS_LIBRARY_OUTPUT_DIR ${CMAKE_SOURCE_DIR}/lib )
-set( DEIMOS_ARCHIVE_OUTPUT_DIR ${CMAKE_SOURCE_DIR}/lib )
+# PROJECT_SOURCE_DIR is the dir of this file
+# CMAKE_SOURCE_DIR is the dir of root cmakelist
 
-set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${DEIMOS_LIBRARY_OUTPUT_DIR} )
-set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${DEIMOS_LIBRARY_OUTPUT_DIR} )
-set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${DEIMOS_RUNTIME_OUTPUT_DIR} ) # dll and exe
+set( INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include/Deimos )
+set( SOURCE_DIR ${PROJECT_SOURCE_DIR}/src/Core )
+set( RUNTIME_OUTPUT_DIR ${CMAKE_SOURCE_DIR}/bin )
+set( LIBRARY_OUTPUT_DIR ${CMAKE_SOURCE_DIR}/lib )
+set( ARCHIVE_OUTPUT_DIR ${CMAKE_SOURCE_DIR}/lib )
+
+set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${LIBRARY_OUTPUT_DIR} )
+set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${LIBRARY_OUTPUT_DIR} )
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${RUNTIME_OUTPUT_DIR} ) # dll and exe
 
 # phobos3d variables
 set( PHOBOS_DIR "" CACHE PATH "Path to phobos3d directory." )
@@ -72,9 +75,9 @@ if(MSVC)
     # get from: http://stackoverflow.com/questions/7747857/in-cmake-how-do-i-work-around-the-debug-and-release-directories-visual-studio-2
     foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
         string( TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG )
-        set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${DEIMOS_RUNTIME_OUTPUT_DIR} )
-        set( CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${DEIMOS_LIBRARY_OUTPUT_DIR} )
-        set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${DEIMOS_ARCHIVE_OUTPUT_DIR} )
+        set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${RUNTIME_OUTPUT_DIR} )
+        set( CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${LIBRARY_OUTPUT_DIR} )
+        set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${ARCHIVE_OUTPUT_DIR} )
     endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
     
     # add the _d on the and of binary :p
@@ -90,26 +93,25 @@ else()
     set( BOOST_LIBS debug
                     optimized )
                     
-    set( DEIMOS_DEFINITIONS debug PH_CHECK_ASSERT PH_SDL GLEW_STATIC
+    set( PROJECT_DEFINITIONS debug PH_CHECK_ASSERT PH_SDL GLEW_STATIC
                             optimized PH_IGNORE_ASSERT PH_SDL GLEW_STATIC )
 endif()
 
-file( GLOB DEIMOS_SOURCES "${DEIMOS_SOURCE_DIR}/*.cpp" ) # get all .cpp files
-file( GLOB DEIMOS_INCLUDES "${DEIMOS_INCLUDE_DIR}/*.hpp" ) # get all .hpp files
+file( GLOB PROJECT_SOURCES "${SOURCE_DIR}/*.cpp" ) # get all .cpp files
+file( GLOB PROJECT_INCLUDES "${INCLUDE_DIR}/*.hpp" ) # get all .hpp files
 
-include_directories( ${DEIMOS_INCLUDE_DIR}
+include_directories( ${INCLUDE_DIR}
                      ${PHOBOS_INCLUDE_DIR}
                      ${DEIMOS_DEPS_INCLUDE}
                      ${PHOBOS_DEPS_INCLUDE}
                      ${BOOST_DIR} )
-
 
 link_directories( ${PHOBOS_LIB_DIR} )
 link_directories( ${PHOBOS_DEPS_LIB_DIR} )
 link_directories( ${DEIMOS_DEPS_LIB_DIR} )
 link_directories( ${BOOST_LIB_DIR} )
 
-add_library( deimos SHARED ${DEIMOS_SOURCES} ${DEIMOS_INCLUDES} )
+add_library( deimos SHARED ${PROJECT_SOURCES} ${PROJECT_INCLUDES} )
 
 target_compile_definitions( deimos PRIVATE ${DEIMOS_DEFINITIONS} )
 target_link_libraries( deimos ${PHOBOS_LIBS}
