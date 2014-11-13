@@ -9,4 +9,4 @@ if ( WITH_SAMPLES )
     include( Sample_01.cmake )
 endif( WITH_SAMPLES )
 
-include( Deimos.cmake ) # the last cmake file is that will name the visual studio solution
+include( Deimos.cmake ) # the name of solution is the same of the last included file.
