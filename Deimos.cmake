@@ -82,9 +82,6 @@ if(MSVC)
         set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${ARCHIVE_OUTPUT_DIR} )
     endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
     
-    # add the _d on the and of binary :p
-    set( CMAKE_DEBUG_POSTFIX "_d" )
-    
 else()
     set( PHOBOS_LIBS debug PH_Base_d PH_System_d PH_Register_d
                      optimized PH_Base PH_System PH_Register )
@@ -98,6 +95,9 @@ else()
     set( PROJECT_DEFINITIONS debug PH_CHECK_ASSERT PH_SDL GLEW_STATIC
                             optimized PH_IGNORE_ASSERT PH_SDL GLEW_STATIC )
 endif()
+
+# add the _d on the and of binary :p
+set( CMAKE_DEBUG_POSTFIX "_d" )
 
 file( GLOB PROJECT_SOURCES "${SOURCE_DIR}/*.cpp" ) # get all .cpp files
 file( GLOB PROJECT_INCLUDES "${INCLUDE_DIR}/*.hpp" ) # get all .hpp files
