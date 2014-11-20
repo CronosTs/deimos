@@ -57,21 +57,43 @@ if ( BOOST_DIR STREQUAL "" )
     message( FATAL_ERROR "Boost dir was not correctly configured!" )
 endif()
 
-if(MSVC)
-    set( PHOBOS_LIBS $<$<CONFIG:Debug>:PH_Base_d PH_System_d PH_Register_d>
-                     $<$<CONFIG:Release>:PH_Base PH_System PH_Register> )
-                    
-    set( PHOBOS_DEPS_LIBS $<$<CONFIG:Debug>:SDL_d SDLmain_d opengl32 glu32>
-                          $<$<CONFIG:Release>:SDL SDLmain> opengl32 glu32 )
+# definitions
+set( ALL_CONFIG_DEFS GLEW_STATIC PH_BASE_EXPORTS )
+set( DEBUG_CONFIG_DEFS ${ALL_CONFIG_DEFS} PH_CHECK_ASSERT )
+set( RELEASE_CONFIG_DEFS ${ALL_CONFIG_DEFS} PH_IGNORE_ASSERT )
 
-    set( DEIMOS_DEPS_LIBS $<$<CONFIG:Debug>:glew_d SDL_Image_d>
-                          $<$<CONFIG:Release>:glew SDL_Image> )
-                         
-     set( BOOST_LIBS $<$<CONFIG:Debug>:>
-                     $<$<CONFIG:Release>:> )
+# libraries
+set( ALL_CONFIG_LIBS opengl32 glu32 )
+set( DEBUG_CONFIG_LIBS ${ALL_CONFIG_LIBS}
+    # phboos libs
+    PH_Base_d PH_Register_d PH_System_d PH_Engine_d
+    
+    # phobos deps
+    SDL_d SDLmain_d
+    
+    # deimos deps
+    glew_d SDL_Image_d
+)
+set( RELEASE_CONFIG_LIBS ${ALL_CONFIG_LIBS}
+    # phboos libs
+    PH_Base PH_Register PH_System PH_Engine
+    
+    # phobos deps
+    SDL SDLmain
+    
+    # deimos deps
+    glew SDL_Image
+)
+
+if(MSVC)
+    
+    #project libs
+    set( PROJECT_LIBS $<$<CONFIG:Debug>: ${DEBUG_CONFIG_LIBS}>
+                      $<$<CONFIG:Release>: ${RELEASE_CONFIG_LIBS}> )
+                      
     # define some macros/constants
-    set( DEIMOS_DEFINITIONS $<$<CONFIG:Debug>:PH_CHECK_ASSERT  PH_SDL GLEW_STATIC PH_BASE_EXPORTS>
-                            $<$<CONFIG:Release>:PH_IGNORE_ASSERT  PH_SDL GLEW_STATIC PH_BASE_EXPORTS> )
+    set( PROJECT_DEFINITIONS $<$<CONFIG:Debug>: ${DEBUG_CONFIG_DEFS}>
+                             $<$<CONFIG:Release>: ${RELEASE_CONFIG_DEFS}> )
                            
     
     # get from: http://stackoverflow.com/questions/7747857/in-cmake-how-do-i-work-around-the-debug-and-release-directories-visual-studio-2
@@ -83,17 +105,14 @@ if(MSVC)
     endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
     
 else()
-    set( PHOBOS_LIBS debug PH_Base_d PH_System_d PH_Register_d
-                     optimized PH_Base PH_System PH_Register )
-    set( PHOBOS_DEPS_LIBS debug SDL_d SDLmain_d
-                          optimized SDL SDLmain )
-    set( DEIMOS_DEPS_LIBS debug glew_d SDL_Image_d
-                          optimized glew SDL_Image )
-    set( BOOST_LIBS debug
-                    optimized )
-                    
-    set( PROJECT_DEFINITIONS debug PH_CHECK_ASSERT PH_SDL GLEW_STATIC
-                            optimized PH_IGNORE_ASSERT PH_SDL GLEW_STATIC )
+    
+     #project libs
+    set( PROJECT_LIBS debug ${DEBUG_CONFIG_LIBS}
+                      optimized ${RELEASE_CONFIG_LIBS} )
+                      
+    # define some macros/constants
+    set( PROJECT_DEFINITIONS debug ${DEBUG_CONFIG_DEFS}
+                             optimized ${RELEASE_CONFIG_DEFS} )
 endif()
 
 # add the _d on the and of binary :p
@@ -102,11 +121,13 @@ set( CMAKE_DEBUG_POSTFIX "_d" )
 file( GLOB PROJECT_SOURCES "${SOURCE_DIR}/*.cpp" ) # get all .cpp files
 file( GLOB PROJECT_INCLUDES "${INCLUDE_DIR}/*.hpp" ) # get all .hpp files
 
-include_directories( ${INCLUDE_DIR}
-                     ${PHOBOS_INCLUDE_DIR}
-                     ${DEIMOS_DEPS_INCLUDE}
-                     ${PHOBOS_DEPS_INCLUDE}
-                     ${BOOST_DIR} )
+include_directories ( 
+    ${INCLUDE_DIR}
+    ${PHOBOS_INCLUDE_DIR}
+    ${DEIMOS_DEPS_INCLUDE}
+    ${PHOBOS_DEPS_INCLUDE}
+    ${BOOST_DIR}
+)
 
 link_directories( ${PHOBOS_LIB_DIR} )
 link_directories( ${PHOBOS_DEPS_LIB_DIR} )
@@ -115,9 +136,6 @@ link_directories( ${BOOST_LIB_DIR} )
 
 add_library( ${PROJECT_TARGET} SHARED ${PROJECT_SOURCES} ${PROJECT_INCLUDES} )
 
-target_compile_definitions( ${PROJECT_TARGET} PRIVATE ${DEIMOS_DEFINITIONS} )
+target_compile_definitions( ${PROJECT_TARGET} PRIVATE ${PROJECT_DEFINITIONS} )
 target_link_libraries( ${PROJECT_TARGET}
-                        ${PHOBOS_LIBS}
-                        ${DEIMOS_DEPS_LIBS}
-                        ${PHOBOS_DEPS_LIBS}
-                        ${BOOST_LIBS} )
+                       ${PROJECT_LIBS} )

@@ -47,7 +47,7 @@ namespace sample_01
 
     void Player::RegisterCommands(Phobos::Shell::IContext& context)
     {
-        Phobos::Shell::Command command("move", PH_CONTEXT_CMD_BIND(&Player::Move, this));
-        context.AddContextCommand(command);
+        //Phobos::Shell::Command command("move", PH_CONTEXT_CMD_BIND(&Player::Move, this));
+        //context.AddContextCommand(command);
     }
 }
